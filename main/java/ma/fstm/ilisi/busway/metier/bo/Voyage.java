@@ -6,14 +6,16 @@ public class Voyage {
     private Date dateVoyage;
     private float prix;
     private String numeroLigne;
+    private Bus bus;
     private Depart depart;
     private Arrivée arrivée;
     private ArrayList<Arret> arrets;
-    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne, Depart depart, Arrivée arrivée, ArrayList<Arret> arrets) {
+    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne,Bus bus ,Depart depart, Arrivée arrivée, ArrayList<Arret> arrets) {
         this.idVoyage = idVoyage;
         this.dateVoyage = dateVoyage;
         this.prix = prix;
         this.numeroLigne = numeroLigne;
+        this.bus = bus;
         this.depart = depart;
         this.arrivée = arrivée;
         this.arrets = arrets;
@@ -58,15 +60,33 @@ public class Voyage {
         if (arrivée.getStation().equals(station)) {
             return true;
         }
-
         // Vérifie si une des stations d'arrêt correspond
         for (Arret arret : arrets) {
             if (arret.getStation().equals(station)) {
                 return true;
             }
         }
-
         // Aucune correspondance trouvée, le voyage ne passe pas par la station
         return false;
+    }
+    public boolean verifierDisponibilite(Station SD,Station SA){
+
+        return false;
+    }
+
+    public Bus getBus() {
+        return bus;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Voyage{" +
+                "idVoyage=" + idVoyage +
+                ", dateVoyage=" + dateVoyage +
+                ", prix=" + prix +
+                ", numeroLigne='" + numeroLigne +
+                ", bus=" + bus +
+                '}';
     }
 }

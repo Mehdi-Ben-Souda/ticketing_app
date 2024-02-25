@@ -24,4 +24,12 @@ public class Bus {
     public String getMatricule() {
         return matricule;
     }
+
+    @Override
+    public String toString() {
+        return "Bus{" +
+                "capacite=" + capacite +
+                ", matricule='" + matricule +
+                '}';
+    }
 }
