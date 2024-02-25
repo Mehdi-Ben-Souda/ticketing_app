@@ -31,5 +31,7 @@ public class Bus {
                 "capacite=" + capacite +
                 ", matricule='" + matricule +
                 '}';
+    public int getCapacite() {
+        return capacite;
     }
 }

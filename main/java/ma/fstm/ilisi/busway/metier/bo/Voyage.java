@@ -10,7 +10,8 @@ public class Voyage {
     private Depart depart;
     private Arrivée arrivée;
     private ArrayList<Arret> arrets;
-    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne,Bus bus ,Depart depart, Arrivée arrivée, ArrayList<Arret> arrets) {
+    private ArrayList<Reservation> reservations;
+    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne, Depart depart, Arrivée arrivée, ArrayList<Arret> arrets) {
         this.idVoyage = idVoyage;
         this.dateVoyage = dateVoyage;
         this.prix = prix;
@@ -69,10 +70,7 @@ public class Voyage {
         // Aucune correspondance trouvée, le voyage ne passe pas par la station
         return false;
     }
-    public boolean verifierDisponibilite(Station SD,Station SA){
 
-        return false;
-    }
 
     public Bus getBus() {
         return bus;
@@ -89,4 +87,52 @@ public class Voyage {
                 ", bus=" + bus +
                 '}';
     }
+
+    public boolean verifierDisponibilite(Station stationA, Station stationD)
+    {
+        int capacite = bus.getCapacite();
+        int indexStationDepartReservation = -1;
+        int indexStationArriveeReservation = -1;
+
+        int indexStationArrivee=getindexStation(stationA);
+        int indexStationDepart=getindexStation(stationD);
+
+        for (Reservation reservation : reservations) {
+
+            indexStationArriveeReservation=getindexStation(reservation.getStationArrivee());
+
+            indexStationDepartReservation=getindexStation(reservation.getStationDepart());
+
+                //Si la station de départ de la réservation est avant la station de départ du segment desiré et
+                // la station d'arrivée de la réservation est après la station de départ du segment désiré
+            if(indexStationDepartReservation<=indexStationDepart && indexStationArriveeReservation>indexStationDepart)
+            {
+                capacite--;
+            }
+                //Si la station de départ de la réservation est apres la station de départ du segment desiré et
+                // la station de depart de la reservation est avant la station d'arrivée du segment désiré
+            if(indexStationDepart<=indexStationDepartReservation && indexStationDepartReservation<indexStationArrivee)
+            {
+                capacite--;
+            }
+        }
+        return !(capacite==0);
+    }
+
+    public int getindexStation(Station station)
+    {
+        if(station.equals(depart.getStation()))
+        {
+            return -1;
+        }
+        else
+        {
+            if(station.equals(arrivée.getStation()))
+            {
+                return arrets.size()+1;
+            }
+            return arrets.indexOf(station);
+        }
+    }
+
 }

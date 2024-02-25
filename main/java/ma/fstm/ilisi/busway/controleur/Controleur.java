@@ -36,7 +36,7 @@ public class Controleur {
         Station SD = catalogueStation.chercherStationByNom(nomStationD);
         Station SA = catalogueStation.chercherStationByNom(nomStationA);
         //recuperer les voyages
-        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SD,SA);
+        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SA,SD);
         List<Voyage> vDisponibles = new ArrayList<Voyage>();
         for(Voyage v: Voyages){
             if(v.verifierDisponibilite(SD, SA)){

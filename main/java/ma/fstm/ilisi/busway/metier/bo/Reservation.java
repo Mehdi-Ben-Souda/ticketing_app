@@ -7,15 +7,22 @@ import java.util.*;
  */
 public class Reservation {
 
-    /**
-     * Default constructor
-     */
+    private Station stationDepart;
+    private Station stationArrivee;
+    private LocalTime heureReservation;
+
     public Reservation() {
     }
 
-    /**
-     * 
-     */
-    private LocalTime heureReservation;
+    public Station getStationDepart() {
+        return stationDepart;
+    }
 
+    public Station getStationArrivee() {
+        return stationArrivee;
+    }
+
+    public LocalTime getHeureReservation() {
+        return heureReservation;
+    }
 }
