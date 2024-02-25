@@ -5,7 +5,7 @@ import java.time.*;
 /**
  * 
  */
-public class Arret {
+public class Arret{
     private LocalTime heureArret;
     private Station station;
     private Voyage voyage;
@@ -16,4 +16,7 @@ public class Arret {
     }
 
 
+    public Station getStation() {
+        return station;
+    }
 }

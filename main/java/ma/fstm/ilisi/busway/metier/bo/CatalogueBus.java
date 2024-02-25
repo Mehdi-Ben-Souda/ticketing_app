@@ -12,10 +12,9 @@ import java.util.TreeMap;
  * @author Jebbanema
  */
 public class CatalogueBus {
-
     public TreeMap<String, Bus> collection =new TreeMap<String, Bus>();
 
-   public Bus chercherBusByMatricule(String matricule)
+    public Bus chercherBusByMatricule(String matricule)
    {
        return collection.get(matricule);
    }

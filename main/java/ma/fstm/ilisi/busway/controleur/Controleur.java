@@ -4,12 +4,12 @@
  */
 package ma.fstm.ilisi.busway.controleur;
 
-import ma.fstm.ilisi.busway.metier.bo.Bus;
-import ma.fstm.ilisi.busway.metier.bo.CatalogueBus;
-import ma.fstm.ilisi.busway.metier.bo.CatalogueStation;
-import ma.fstm.ilisi.busway.metier.bo.Passager;
-import ma.fstm.ilisi.busway.metier.bo.Station;
+import ma.fstm.ilisi.busway.metier.bo.*;
 import ma.fstm.ilisi.busway.metier.service.ServiceReservation;
+
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -19,6 +19,8 @@ public class Controleur {
     
     private CatalogueBus catalogueBus;
     private CatalogueStation catalogueStation;
+    private CatalogueVoyage catalogueVoyage;
+
     
     public void reserver(String matricule,String idStationA,String idStationD,Passager passager)
     {
@@ -28,4 +30,13 @@ public class Controleur {
         //TO DO  : appeler la fonction isLimit
         new ServiceReservation().reserver(bus, stationA, stationD, passager);
     }
+    public void AfficherBusDispo(String nomStationD, String nomStationA, Date DateV){
+
+        Station SD = catalogueStation.chercherStationByNom(nomStationD);
+        Station SA = catalogueStation.chercherStationByNom(nomStationA);
+
+        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SD,SA);
+    }
+
+
 }

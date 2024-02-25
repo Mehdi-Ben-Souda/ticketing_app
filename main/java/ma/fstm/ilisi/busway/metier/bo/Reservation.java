@@ -1,4 +1,5 @@
 package ma.fstm.ilisi.busway.metier.bo;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -15,6 +16,6 @@ public class Reservation {
     /**
      * 
      */
-    private time heureReservation;
+    private LocalTime heureReservation;
 
 }
