@@ -5,7 +5,7 @@ import java.util.*;
 public class CatalogueVoyage {
     public TreeMap<Integer, Voyage> collection =new TreeMap<Integer, Voyage>();
 
-    public Voyage chercherVoyageByID(Integer ID)
+    public Voyage chercherVoyageByID(int ID)
     {
         return collection.get(ID);
     }

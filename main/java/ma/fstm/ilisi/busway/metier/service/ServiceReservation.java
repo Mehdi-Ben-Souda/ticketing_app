@@ -7,6 +7,7 @@ package ma.fstm.ilisi.busway.metier.service;
 import ma.fstm.ilisi.busway.metier.bo.Bus;
 import ma.fstm.ilisi.busway.metier.bo.Passager;
 import ma.fstm.ilisi.busway.metier.bo.Station;
+import ma.fstm.ilisi.busway.metier.bo.Voyage;
 
 /**
  *
@@ -14,7 +15,7 @@ import ma.fstm.ilisi.busway.metier.bo.Station;
  */
 public class ServiceReservation
 {
-    public void reserver(Bus bus,Station stationA,Station stationD,Passager passager)
+    public void reserver(Bus bus, Station stationD, Station stationA, Passager passager, Voyage voyage)
     {
         
     }

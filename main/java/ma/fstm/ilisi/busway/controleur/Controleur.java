@@ -29,13 +29,18 @@ public class Controleur {
     }
 
 
-    public void reserver(String matricule,String idStationA,String idStationD,Passager passager)
+    public void reserver(String matricule,String idStationA,String idStationD,Passager passager,int IdVoyage)
     {
         Bus bus=catalogueBus.chercherBusByMatricule(matricule);
         Station stationA=catalogueStation.chercherStationByNom(idStationA);
         Station stationD=catalogueStation.chercherStationByNom(idStationD);
-        //TO DO  : appeler la fonction isLimit
-        new ServiceReservation().reserver(bus, stationA, stationD, passager);
+        Voyage voyage=catalogueVoyage.chercherVoyageByID(IdVoyage);
+
+            //verifier la disponibilite du bus pour le voyage entre les stations stationD et stationA
+        if(voyage.verifierDisponibilite(stationD, stationA)){
+            new ServiceReservation().reserver(bus,stationD,stationA,passager);
+        }
+
     }
     public void LesBusDisponibles(String nomStationD, String nomStationA, Date DateV){
         //recuperer les stations de depart et d'arrive
