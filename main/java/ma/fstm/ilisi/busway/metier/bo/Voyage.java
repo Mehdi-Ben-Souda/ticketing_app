@@ -122,7 +122,7 @@ public class Voyage {
                 continue;
             }
         }
-        return !( bus.getCapacite() == (reservations.size()-cpt) );
+        return bus.getCapacite() > (reservations.size()-cpt) ;
     }
 
     public int getindexStation(Station station)
