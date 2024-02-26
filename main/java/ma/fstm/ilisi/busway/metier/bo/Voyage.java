@@ -95,7 +95,7 @@ public class Voyage {
 
     public boolean verifierDisponibilite(Station stationD, Station stationA)
     {
-        int capacite = bus.getCapacite();
+        int cpt=0 ;
         int indexStationDepartReservation = -1;
         int indexStationArriveeReservation = -1;
 
@@ -111,18 +111,18 @@ public class Voyage {
 
                 //Si la station de départ de la réservation est avant la station de départ du segment desiré et
                 // la station d'arrivée de la réservation est après la station de départ du segment désiré
-            if(indexStationDepartReservation<=indexStationDepart && indexStationArriveeReservation>indexStationDepart)
+
+            if(indexStationArriveeReservation<=indexStationDepart)
             {
-                capacite--;
+                cpt++;
+                continue;
             }
-                //Si la station de départ de la réservation est apres la station de départ du segment desiré et
-                // la station de depart de la reservation est avant la station d'arrivée du segment désiré
-            if(indexStationDepart<=indexStationDepartReservation && indexStationDepartReservation<indexStationArrivee)
-            {
-                capacite--;
+            if(indexStationDepartReservation>=indexStationArrivee) {
+                cpt++;
+                continue;
             }
         }
-        return !(capacite==0);
+        return !( bus.getCapacite() == (reservations.size()-cpt) );
     }
 
     public int getindexStation(Station station)
