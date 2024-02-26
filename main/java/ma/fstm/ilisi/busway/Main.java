@@ -1,5 +1,6 @@
 package ma.fstm.ilisi.busway;
 
+import ma.fstm.ilisi.busway.controleur.Controleur;
 import ma.fstm.ilisi.busway.metier.bo.*;
 
 import java.time.LocalTime;
@@ -10,7 +11,7 @@ import java.util.Date;
 public class Main {
     public static void main(String[] args) {
         CatalogueBus catalogueBus = new CatalogueBus();
-        catalogueBus.ajouterBus(new Bus(3, "1234"));
+        catalogueBus.ajouterBus(new Bus(4, "1234"));
         catalogueBus.ajouterBus(new Bus(20, "5678"));
         catalogueBus.ajouterBus(new Bus(25, "91011"));
         catalogueBus.ajouterBus(new Bus(50, "121314"));
@@ -73,5 +74,9 @@ public class Main {
         voyage1.ajouterReservation(reservation3);
 
         System.out.println(voyage1.verifierDisponibilite(station2, station15));
+
+        Controleur c = new Controleur(catalogueBus,catalogueStation,catalogueVoyage);
+        c.LesBusDisponibles("Station1","Station7",new Date("12/12/2020"));
+
     }
 }

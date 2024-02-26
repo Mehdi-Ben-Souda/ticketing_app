@@ -22,7 +22,13 @@ public class Controleur {
     private CatalogueStation catalogueStation;
     private CatalogueVoyage catalogueVoyage;
 
-    
+    public Controleur(CatalogueBus catalogueBus, CatalogueStation catalogueStation, CatalogueVoyage catalogueVoyage) {
+        this.catalogueBus = catalogueBus;
+        this.catalogueStation = catalogueStation;
+        this.catalogueVoyage = catalogueVoyage;
+    }
+
+
     public void reserver(String matricule,String idStationA,String idStationD,Passager passager)
     {
         Bus bus=catalogueBus.chercherBusByMatricule(matricule);
@@ -31,7 +37,7 @@ public class Controleur {
         //TO DO  : appeler la fonction isLimit
         new ServiceReservation().reserver(bus, stationA, stationD, passager);
     }
-    public void AfficherBusDispo(String nomStationD, String nomStationA, Date DateV){
+    public void LesBusDisponibles(String nomStationD, String nomStationA, Date DateV){
         //recuperer les stations de depart et d'arrive
         Station SD = catalogueStation.chercherStationByNom(nomStationD);
         Station SA = catalogueStation.chercherStationByNom(nomStationA);
@@ -45,8 +51,6 @@ public class Controleur {
                 System.out.println((v));
             }
         }
-
-
     }
 
 }
