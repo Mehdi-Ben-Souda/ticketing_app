@@ -35,4 +35,10 @@ public class Station {
 		return adresse;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Arret)
+            return super.equals(((Arret)obj).getStation());
+        return super.equals(obj);
+    }
 }

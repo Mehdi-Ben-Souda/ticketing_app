@@ -93,7 +93,7 @@ public class Voyage {
                 '}';
     }
 
-    public boolean verifierDisponibilite(Station stationA, Station stationD)
+    public boolean verifierDisponibilite(Station stationD, Station stationA)
     {
         int capacite = bus.getCapacite();
         int indexStationDepartReservation = -1;
@@ -108,8 +108,6 @@ public class Voyage {
 
             indexStationDepartReservation=getindexStation(reservation.getStationDepart());
 
-            System.out.println("indexStationDepartReservation : "+indexStationDepartReservation +
-                    " indexStationArriveeReservation : "+indexStationArriveeReservation );
 
                 //Si la station de départ de la réservation est avant la station de départ du segment desiré et
                 // la station d'arrivée de la réservation est après la station de départ du segment désiré
@@ -129,10 +127,8 @@ public class Voyage {
 
     public int getindexStation(Station station)
     {
-        System.out.println(station.getNomStation());
         if(station.equals(depart.getStation()))
         {
-
             return -1;
         }
         else
@@ -141,6 +137,7 @@ public class Voyage {
             {
                 return arrets.size()+1;
             }
+
             return arrets.indexOf(station);
         }
     }

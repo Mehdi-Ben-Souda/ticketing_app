@@ -73,9 +73,5 @@ public class Main {
         voyage1.ajouterReservation(reservation3);
 
         System.out.println(voyage1.verifierDisponibilite(station2, station15));
-
-
-
-
     }
 }
