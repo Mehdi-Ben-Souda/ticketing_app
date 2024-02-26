@@ -12,6 +12,10 @@ public class Bus {
     public Bus() {
     }
 
+    public Bus(int capacite, String matricule) {
+        this.capacite = capacite;
+        this.matricule = matricule;
+    }
 
     private int capacite;
 
@@ -31,6 +35,7 @@ public class Bus {
                 "capacite=" + capacite +
                 ", matricule='" + matricule +
                 '}';
+    }
     public int getCapacite() {
         return capacite;
     }

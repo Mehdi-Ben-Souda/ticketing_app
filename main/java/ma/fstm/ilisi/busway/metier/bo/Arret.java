@@ -15,6 +15,18 @@ public class Arret{
         this.voyage = voyage;
     }
 
+    public Arret(LocalTime heureArret,Station station) {
+        this.heureArret = heureArret;
+        this.station = station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
+
+    public void setVoyage(Voyage voyage) {
+        this.voyage = voyage;
+    }
 
     public Station getStation() {
         return station;

@@ -16,6 +16,19 @@ public class Depart{
         this.voyage = voyage;
     }
 
+    public Depart(LocalTime heureDepart,Station station) {
+        this.heureDepart = heureDepart;
+        this.station = station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
+
+    public void setVoyage(Voyage voyage) {
+        this.voyage = voyage;
+    }
+
     public Station getStation() {
         return station;
     }

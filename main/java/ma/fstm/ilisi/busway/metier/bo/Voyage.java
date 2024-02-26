@@ -11,7 +11,7 @@ public class Voyage {
     private Arrivée arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
-    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne, Depart depart, Arrivée arrivée, ArrayList<Arret> arrets) {
+    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne, Depart depart, Arrivée arrivée, ArrayList<Arret> arrets, Bus bus) {
         this.idVoyage = idVoyage;
         this.dateVoyage = dateVoyage;
         this.prix = prix;
@@ -20,8 +20,13 @@ public class Voyage {
         this.depart = depart;
         this.arrivée = arrivée;
         this.arrets = arrets;
+        reservations = new ArrayList<Reservation>();
     }
 
+    public void ajouterReservation(Reservation reservation)
+    {
+        reservations.add(reservation);
+    }
 
     public int getIdVoyage() {
         return idVoyage;
@@ -103,6 +108,9 @@ public class Voyage {
 
             indexStationDepartReservation=getindexStation(reservation.getStationDepart());
 
+            System.out.println("indexStationDepartReservation : "+indexStationDepartReservation +
+                    " indexStationArriveeReservation : "+indexStationArriveeReservation );
+
                 //Si la station de départ de la réservation est avant la station de départ du segment desiré et
                 // la station d'arrivée de la réservation est après la station de départ du segment désiré
             if(indexStationDepartReservation<=indexStationDepart && indexStationArriveeReservation>indexStationDepart)
@@ -121,8 +129,10 @@ public class Voyage {
 
     public int getindexStation(Station station)
     {
+        System.out.println(station.getNomStation());
         if(station.equals(depart.getStation()))
         {
+
             return -1;
         }
         else

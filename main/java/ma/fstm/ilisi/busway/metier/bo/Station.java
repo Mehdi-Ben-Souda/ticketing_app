@@ -12,6 +12,11 @@ public class Station {
     public Station() {
     }
 
+    public Station(String nomStation, String adresse) {
+        this.nomStation = nomStation;
+        this.adresse = adresse;
+    }
+
     /**
      * 
      */
