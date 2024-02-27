@@ -29,17 +29,15 @@ public class Controleur {
     }
 
 
-    public void reserver(String matricule,String idStationA,String idStationD,Passager passager,int IdVoyage)
+    public void reserver(String idStationD,String idStationA,Passager passager,int IdVoyage)
     {
-        Bus bus=catalogueBus.chercherBusByMatricule(matricule);
         Station stationA=catalogueStation.chercherStationByNom(idStationA);
         Station stationD=catalogueStation.chercherStationByNom(idStationD);
         Voyage voyage=catalogueVoyage.chercherVoyageByID(IdVoyage);
 
-            //verifier la disponibilite du bus pour le voyage entre les stations stationD et stationA
-        if(voyage.verifierDisponibilite(stationD, stationA)){
-            new ServiceReservation().reserver(bus,stationD,stationA,passager);
-        }
+        new ServiceReservation().reserver(stationD,stationA,passager,voyage);
+
+
 
     }
     public void LesBusDisponibles(String nomStationD, String nomStationA, Date DateV){

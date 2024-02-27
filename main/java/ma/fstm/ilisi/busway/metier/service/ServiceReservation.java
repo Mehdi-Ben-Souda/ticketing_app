@@ -4,10 +4,9 @@
  */
 package ma.fstm.ilisi.busway.metier.service;
 
-import ma.fstm.ilisi.busway.metier.bo.Bus;
-import ma.fstm.ilisi.busway.metier.bo.Passager;
-import ma.fstm.ilisi.busway.metier.bo.Station;
-import ma.fstm.ilisi.busway.metier.bo.Voyage;
+import ma.fstm.ilisi.busway.metier.bo.*;
+
+import java.time.LocalTime;
 
 /**
  *
@@ -15,8 +14,15 @@ import ma.fstm.ilisi.busway.metier.bo.Voyage;
  */
 public class ServiceReservation
 {
-    public void reserver(Bus bus, Station stationD, Station stationA, Passager passager, Voyage voyage)
+    public void reserver(Station stationD, Station stationA, Passager passager, Voyage voyage)
     {
-        
+        //verifier la disponibilite du bus pour le voyage entre les stations stationD et stationA
+        if(voyage.verifierDisponibilite(stationD, stationA))
+        {
+            Reservation reservation=new Reservation(stationD,stationA, LocalTime.now());
+            voyage.ajouterReservation(reservation);
+            //to do :appel a DAOReservation
+        }
+        //to do : si non lancer une exception
     }
 }
