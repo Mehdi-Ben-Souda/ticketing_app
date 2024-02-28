@@ -56,4 +56,11 @@ public class Controleur {
         }
     }
 
+    public void ajouterVoyage(String matriculeBus,String matriculeConducteur,Date date,
+                              Depart depart , Arrivée arrivée , ArrayList<Arret> arrets)
+    {
+        Bus bus=catalogueBus.chercherBusByMatricule(matriculeBus);
+        //To do : chercher conducteur
+    }
+
 }

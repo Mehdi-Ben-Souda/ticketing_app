@@ -1,4 +1,5 @@
 package ma.fstm.ilisi.busway.metier.bo;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -38,5 +39,11 @@ public class Bus {
     }
     public int getCapacite() {
         return capacite;
+    }
+
+    public boolean isBusy(LocalTime depart,LocalTime arrivee, Date date)
+    {
+        //To do : on a besoin d'ajouter la liste des voyage pour la class bus
+        return true;
     }
 }
