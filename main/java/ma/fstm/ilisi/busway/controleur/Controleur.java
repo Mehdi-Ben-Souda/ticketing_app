@@ -45,7 +45,7 @@ public class Controleur {
         Station SD = catalogueStation.chercherStationByNom(nomStationD);
         Station SA = catalogueStation.chercherStationByNom(nomStationA);
         //recuperer les voyages
-        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SA,SD);
+        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SD,SA);
         List<Voyage> vDisponibles = new ArrayList<Voyage>();
         for(Voyage v: Voyages){
             if(v.verifierDisponibilite(SD, SA)){
@@ -61,6 +61,16 @@ public class Controleur {
     {
         Bus bus=catalogueBus.chercherBusByMatricule(matriculeBus);
         //To do : chercher conducteur
+    }
+
+
+    public void ajouterBus(String matricule,int capacite)
+    {
+        catalogueBus.ajouterBus(new Bus(capacite,matricule));
+    }
+    public void supprimerBus(String matricule)
+    {
+        catalogueBus.supprimerBus(matricule);
     }
 
 }

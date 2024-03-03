@@ -101,6 +101,10 @@ public class Voyage {
 
         int indexStationArrivee=getindexStation(stationA);
         int indexStationDepart=getindexStation(stationD);
+        if(indexStationDepart>=indexStationArrivee)
+        {
+            return false;
+        }
 
         for (Reservation reservation : reservations) {
 

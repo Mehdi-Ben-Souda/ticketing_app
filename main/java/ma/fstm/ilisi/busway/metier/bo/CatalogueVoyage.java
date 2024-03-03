@@ -21,7 +21,8 @@ public class CatalogueVoyage {
             Voyage voyage = entry.getValue();
             if (voyage.getDateVoyage().equals(date)) {
                 if (voyage.passeParStation(SD) && voyage.passeParStation(SA)) {
-                    voyagesBySegment.add(voyage);
+                    if(voyage.getindexStation(SD) < voyage.getindexStation(SA))
+                        voyagesBySegment.add(voyage);
                 }
             }
         }

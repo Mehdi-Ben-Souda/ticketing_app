@@ -23,5 +23,9 @@ public class CatalogueBus {
     {
          collection.put(bus.getMatricule(), bus);
     }
+    public void supprimerBus(String matricule)
+    {
+        collection.remove(matricule);
+    }
 
 }

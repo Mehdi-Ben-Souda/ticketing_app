@@ -41,4 +41,12 @@ public class Station {
             return super.equals(((Arret)obj).getStation());
         return super.equals(obj);
     }
+
+    @Override
+    public String toString() {
+        return "Station{" +
+                "nomStation='" + nomStation + '\'' +
+                ", adresse='" + adresse + '\'' +
+                '}';
+    }
 }

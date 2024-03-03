@@ -31,4 +31,12 @@ public class Arret{
     public Station getStation() {
         return station;
     }
+
+    @Override
+    public String toString() {
+        return "Arret{" +
+                "heureArret=" + heureArret +
+                ", station=" + station +
+                '}';
+    }
 }

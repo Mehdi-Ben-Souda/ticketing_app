@@ -40,6 +40,10 @@ public class Main {
         Station station4=catalogueStation.chercherStationByNom("Station4");
         Station station15=catalogueStation.chercherStationByNom("Station15");
         Station station10=catalogueStation.chercherStationByNom("Station10");
+        Station station11=catalogueStation.chercherStationByNom("Station11");
+        Station station12=catalogueStation.chercherStationByNom("Station12");
+        Station station13=catalogueStation.chercherStationByNom("Station13");
+
 
 
         Depart depart1 = new Depart(LocalTime.parse("12:00"), station1);
@@ -51,32 +55,62 @@ public class Main {
         lesArrets.add(new Arret(LocalTime.parse("12:30"), station4));
         lesArrets.add(new Arret(LocalTime.parse("12:40"), station15));
 
+        System.out.println(lesArrets);
         Voyage voyage1 = new Voyage(1, new Date("12/12/2020"), 8, "32D", depart1, arrivée1,
                 lesArrets, catalogueBus.chercherBusByMatricule("1234"));
+
+
+        Depart depart2=new Depart(LocalTime.parse("14:00"),station15);
+        Arrivée arrivée2=new Arrivée(LocalTime.parse("14:50"),station13);
+        ArrayList<Arret> lesArrets2 = new ArrayList<Arret>();
+        lesArrets2.add(new Arret(LocalTime.parse("14:10"),station4));
+        lesArrets2.add(new Arret(LocalTime.parse("14:20"),station1));
+        lesArrets2.add(new Arret(LocalTime.parse("14:30"),station2));
+        lesArrets2.add(new Arret(LocalTime.parse("14:40"),station7));
+
+
+
+        Voyage voyage2=new Voyage(2,new Date("12/12/2020"),8,"800",depart2,arrivée2,
+                lesArrets2,catalogueBus.chercherBusByMatricule("5678"));
+
+
+
 
         depart1.setVoyage(voyage1);
         arrivée1.setVoyage(voyage1);
         for (Arret arret : lesArrets) {
             arret.setVoyage(voyage1);
         }
+        depart2.setVoyage(voyage2);
+        arrivée2.setVoyage(voyage2);
+        for (Arret arret : lesArrets2) {
+            arret.setVoyage(voyage2);
+        }
+
 
         CatalogueVoyage catalogueVoyage = new CatalogueVoyage();
 
         catalogueVoyage.ajouterVoyage(voyage1);
+        catalogueVoyage.ajouterVoyage(voyage2);
 
         Reservation reservation1 = new Reservation(station1, station7, LocalTime.now());
         Reservation reservation2 = new Reservation(station1, station7, LocalTime.now());
         Reservation reservation3 = new Reservation(station1, station7, LocalTime.now());
+
+        Reservation reservation4 = new Reservation(station1, station7, LocalTime.now());
 
 
         voyage1.ajouterReservation(reservation1);
         voyage1.ajouterReservation(reservation2);
         voyage1.ajouterReservation(reservation3);
 
-        System.out.println(voyage1.verifierDisponibilite(station2, station15));
+        voyage2.ajouterReservation(reservation4);
+
+        //System.out.println(voyage1.verifierDisponibilite(station7, station1));
 
         Controleur c = new Controleur(catalogueBus,catalogueStation,catalogueVoyage);
         c.LesBusDisponibles("Station1","Station7",new Date("12/12/2020"));
+
 
     }
 }
