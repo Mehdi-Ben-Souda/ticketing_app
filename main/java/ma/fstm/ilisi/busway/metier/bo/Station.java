@@ -15,17 +15,11 @@ public class Station {
     public Station(String nomStation, String adresse) {
         this.nomStation = nomStation;
         this.adresse = adresse;
+        this.arrets = new ArrayList<Arret>();
     }
-
-    /**
-     * 
-     */
     private String nomStation;
-
-    /**
-     * 
-     */
     private String adresse;
+    private ArrayList<Arret> arrets;
 
 	public String getNomStation() {
 		return nomStation;
@@ -34,6 +28,8 @@ public class Station {
 	public String getAdresse() {
 		return adresse;
 	}
+
+
 
     @Override
     public boolean equals(Object obj) {
@@ -48,5 +44,18 @@ public class Station {
                 "nomStation='" + nomStation + '\'' +
                 ", adresse='" + adresse + '\'' +
                 '}';
+    }
+
+    public ArrayList<Arret> getArrets() {
+        return arrets;
+    }
+
+    public void setArrets(ArrayList<Arret> arrets) {
+        this.arrets = arrets;
+    }
+
+    public void ajouterArret(Arret arret)
+    {
+        arrets.add(arret);
     }
 }

@@ -15,11 +15,6 @@ public class Arret{
         this.voyage = voyage;
     }
 
-    public Arret(LocalTime heureArret,Station station) {
-        this.heureArret = heureArret;
-        this.station = station;
-    }
-
     public void setStation(Station station) {
         this.station = station;
     }

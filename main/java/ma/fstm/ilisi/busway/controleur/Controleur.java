@@ -40,12 +40,12 @@ public class Controleur {
 
 
     }
-    public void LesBusDisponibles(String nomStationD, String nomStationA, Date DateV){
+    public void LesBusDisponibles(String nomStationD, String nomStationA){
         //recuperer les stations de depart et d'arrive
         Station SD = catalogueStation.chercherStationByNom(nomStationD);
         Station SA = catalogueStation.chercherStationByNom(nomStationA);
         //recuperer les voyages
-        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(DateV,SD,SA);
+        List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(SD,SA);
         List<Voyage> vDisponibles = new ArrayList<Voyage>();
         for(Voyage v: Voyages){
             if(v.verifierDisponibilite(SD, SA)){
@@ -57,7 +57,7 @@ public class Controleur {
     }
 
     public void ajouterVoyage(String matriculeBus,String matriculeConducteur,Date date,
-                              Depart depart , Arrivée arrivée , ArrayList<Arret> arrets)
+                              Station depart , Station arrivée , ArrayList<Arret> arrets)
     {
         Bus bus=catalogueBus.chercherBusByMatricule(matriculeBus);
         //To do : chercher conducteur

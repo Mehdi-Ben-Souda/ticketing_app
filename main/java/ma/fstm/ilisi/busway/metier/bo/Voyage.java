@@ -1,69 +1,134 @@
 package ma.fstm.ilisi.busway.metier.bo;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Voyage {
     private int idVoyage;
-    private Date dateVoyage;
+    private LocalTime heureDepart;
+    private LocalTime heureArrivée;
     private float prix;
     private String numeroLigne;
     private Bus bus;
-    private Depart depart;
-    private Arrivée arrivée;
+    private Station depart;
+    private Station arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
-    public Voyage(int idVoyage, Date dateVoyage, float prix, String numeroLigne, Depart depart, Arrivée arrivée, ArrayList<Arret> arrets, Bus bus) {
+
+    public Voyage(int idVoyage, String heureDepart,String heureArrivée, float prix, String numeroLigne, Station depart, Station arrivée, Bus bus) {
         this.idVoyage = idVoyage;
-        this.dateVoyage = dateVoyage;
         this.prix = prix;
         this.numeroLigne = numeroLigne;
         this.bus = bus;
         this.depart = depart;
         this.arrivée = arrivée;
-        this.arrets = arrets;
-        reservations = new ArrayList<Reservation>();
+        this.arrets = new ArrayList<Arret>();
+        this.heureDepart = LocalTime.parse(heureDepart);
+        this.heureArrivée = LocalTime.parse(heureArrivée);
+        this.reservations = new ArrayList<Reservation>();
     }
-
-    public void ajouterReservation(Reservation reservation)
-    {
-        reservations.add(reservation);
-    }
-
     public int getIdVoyage() {
         return idVoyage;
     }
-
     public void setIdVoyage(int idVoyage) {
         this.idVoyage = idVoyage;
     }
-
-    public Date getDateVoyage() {
-        return dateVoyage;
+    public float getPrix() {
+        return prix;
     }
 
-    public void setDateVoyage(Date dateVoyage) {
-        this.dateVoyage = dateVoyage;
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
+
+    public String getNumeroLigne() {
+        return numeroLigne;
+    }
+
+    public void setNumeroLigne(String numeroLigne) {
+        this.numeroLigne = numeroLigne;
+    }
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
+    }
+    public Bus getBus() {
+        return bus;
+    }
+
+    public LocalTime getHeureDepart() {
+        return heureDepart;
+    }
+
+    public void setHeureDepart(LocalTime heureDepart) {
+        this.heureDepart = heureDepart;
+    }
+
+    public LocalTime getHeureArrivée() {
+        return heureArrivée;
+    }
+
+    public void setHeureArrivée(LocalTime heureArrivée) {
+        this.heureArrivée = heureArrivée;
+    }
+
+    public void setDepart(Station depart) {
+        this.depart = depart;
+    }
+    public Station getDepart() {
+        return depart;
+    }
+
+    public void setArrivée(Station arrivée) {
+        this.arrivée = arrivée;
+    }
+
+    public Station getArrivée() {
+        return arrivée;
+    }
+
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(ArrayList<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     public ArrayList<Arret> getArrets() {
         return arrets;
     }
 
-    public Depart getDepart() {
-        return depart;
+    public void setArrets(ArrayList<Arret>arrets) {
+        this.arrets = arrets;
     }
 
-    public Arrivée getArrivée() {
-        return arrivée;
+    public void ajouterReservation(Reservation reservation)
+    {
+        reservations.add(reservation);
+    }
+    public void ajouterArret(Arret arret)
+    {
+        arrets.add(arret);
+    }
+
+    @Override
+    public String toString() {
+        return "Voyage{" +
+                "idVoyage=" + idVoyage +
+                ", prix=" + prix +
+                ", numeroLigne='" + numeroLigne +
+                ", bus=" + bus +
+                '}';
     }
 
     public boolean passeParStation(Station station) {
         // Vérifie si la station de départ correspond
-        if (depart.getStation().equals(station)) {
+        if (depart.equals(station)) {
             return true;
         }
 
         // Vérifie si la station d'arrivée correspond
-        if (arrivée.getStation().equals(station)) {
+        if (arrivée.equals(station)) {
             return true;
         }
         // Vérifie si une des stations d'arrêt correspond
@@ -74,23 +139,6 @@ public class Voyage {
         }
         // Aucune correspondance trouvée, le voyage ne passe pas par la station
         return false;
-    }
-
-
-    public Bus getBus() {
-        return bus;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Voyage{" +
-                "idVoyage=" + idVoyage +
-                ", dateVoyage=" + dateVoyage +
-                ", prix=" + prix +
-                ", numeroLigne='" + numeroLigne +
-                ", bus=" + bus +
-                '}';
     }
 
     public boolean verifierDisponibilite(Station stationD, Station stationA)
@@ -131,13 +179,13 @@ public class Voyage {
 
     public int getindexStation(Station station)
     {
-        if(station.equals(depart.getStation()))
+        if(station.equals(depart))
         {
             return -1;
         }
         else
         {
-            if(station.equals(arrivée.getStation()))
+            if(station.equals(arrivée))
             {
                 return arrets.size()+1;
             }
@@ -145,5 +193,4 @@ public class Voyage {
             return arrets.indexOf(station);
         }
     }
-
 }
