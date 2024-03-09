@@ -15,13 +15,41 @@ public class Station {
     public Station(String nomStation, String adresse) {
         this.nomStation = nomStation;
         this.adresse = adresse;
-        this.arrets = new ArrayList<Arret>();
+        this.voyage_arrets = new ArrayList<Arret>();
     }
     private String nomStation;
     private String adresse;
-    private ArrayList<Arret> arrets;
+    private ArrayList<Arret> voyage_arrets;
 
-	public String getNomStation() {
+    private ArrayList<Voyage> voyage_arrivee;
+
+    private ArrayList<Voyage> voyage_departs;
+
+    public void setNomStation(String nomStation) {
+        this.nomStation = nomStation;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public ArrayList<Voyage> getVoyage_arrivee() {
+        return voyage_arrivee;
+    }
+
+    public void setVoyage_arrivee(ArrayList<Voyage> voyage_arrivee) {
+        this.voyage_arrivee = voyage_arrivee;
+    }
+
+    public ArrayList<Voyage> getVoyage_departs() {
+        return voyage_departs;
+    }
+
+    public void setVoyage_departs(ArrayList<Voyage> voyage_departs) {
+        this.voyage_departs = voyage_departs;
+    }
+
+    public String getNomStation() {
 		return nomStation;
 	}
 
@@ -46,16 +74,16 @@ public class Station {
                 '}';
     }
 
-    public ArrayList<Arret> getArrets() {
-        return arrets;
+    public ArrayList<Arret> getVoyage_arrets() {
+        return voyage_arrets;
     }
 
-    public void setArrets(ArrayList<Arret> arrets) {
-        this.arrets = arrets;
+    public void setVoyage_arrets(ArrayList<Arret> voyage_arrets) {
+        this.voyage_arrets = voyage_arrets;
     }
 
     public void ajouterArret(Arret arret)
     {
-        arrets.add(arret);
+        voyage_arrets.add(arret);
     }
 }
