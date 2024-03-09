@@ -45,26 +45,23 @@ public class Main {
         Station station13=catalogueStation.chercherStationByNom("Station13");
 
 
-
-        //Depart depart1 = new Depart(LocalTime.parse("12:00"), station1);
-        //Arrivée arrivée1 = new Arrivée(LocalTime.parse("12:50"), station10);
-
         Voyage voyage1 = new Voyage(1,"12:00","12:50",8, "32D", station1, station10,catalogueBus.chercherBusByMatricule("1234"));
 
         ArrayList<Arret> lesArrets = new ArrayList<Arret>();
         lesArrets.add(new Arret("12:10", station2,voyage1));
         lesArrets.add(new Arret("12:20", station7,voyage1));
         lesArrets.add(new Arret("12:30", station4,voyage1));
-        lesArrets.add(new Arret("12:40", station15,voyage1));
+        lesArrets.add(new Arret("12:40",station15,voyage1));
 
         voyage1.setArrets(lesArrets);
+        for(Arret a:lesArrets)
+        {
+            a.getStation().ajouterArret(a);
+        }
 
         System.out.println(lesArrets);
 
 
-
-        //Depart depart2=new Depart(LocalTime.parse("14:00"),station15);
-        //Arrivée arrivée2=new Arrivée(LocalTime.parse("14:50"),station13);
 
         Voyage voyage2=new Voyage(2,"14:00","14:50",8,"800",station13,station15,catalogueBus.chercherBusByMatricule("5678"));
 
@@ -73,47 +70,37 @@ public class Main {
         lesArrets2.add(new Arret("14:20",station1,voyage2));
         lesArrets2.add(new Arret("14:30",station2,voyage2));
         lesArrets2.add(new Arret("14:40",station7,voyage2));
+        voyage2.setArrets(lesArrets2);
 
-
-
-
-
-
-
-
-        /*depart1.setVoyage(voyage1);
-        arrivée1.setVoyage(voyage1);
-        for (Arret arret : lesArrets) {
-            arret.setVoyage(voyage1);
+        for(Arret a:lesArrets2)
+        {
+            a.getStation().ajouterArret(a);
         }
-        depart2.setVoyage(voyage2);
-        arrivée2.setVoyage(voyage2);
-        for (Arret arret : lesArrets2) {
-            arret.setVoyage(voyage2);
-        }*/
-
 
         CatalogueVoyage catalogueVoyage = new CatalogueVoyage();
 
         catalogueVoyage.ajouterVoyage(voyage1);
         catalogueVoyage.ajouterVoyage(voyage2);
 
+        /*
         Reservation reservation1 = new Reservation(station1, station7, LocalTime.now());
         Reservation reservation2 = new Reservation(station1, station7, LocalTime.now());
         Reservation reservation3 = new Reservation(station1, station7, LocalTime.now());
 
         Reservation reservation4 = new Reservation(station1, station7, LocalTime.now());
+        */
 
-
-        voyage1.ajouterReservation(reservation1);
+        /*voyage1.ajouterReservation(reservation1);
         voyage1.ajouterReservation(reservation2);
         voyage1.ajouterReservation(reservation3);
 
-        voyage2.ajouterReservation(reservation4);
+        voyage2.ajouterReservation(reservation4);*/
 
         //System.out.println(voyage1.verifierDisponibilite(station7, station1));
 
         Controleur c = new Controleur(catalogueBus,catalogueStation,catalogueVoyage);
+        c.reserver("Station1","Station7",new Passager("Jebbanema","Mohammed","Bh1234",new Date()),1);
+        c.reserver("Station1","Station7",new Passager("Ben Souda","EL MHEDI SALAH","Bh1234",new Date()),1);
         c.LesBusDisponibles("Station1","Station7");
 
     }

@@ -11,5 +11,8 @@ public class Passager extends Personne {
      */
     public Passager() {
     }
+    public Passager(String nom, String prenom, String cin, Date dateNaissance) {
+        super(nom, prenom, cin, dateNaissance);
+    }
 
 }

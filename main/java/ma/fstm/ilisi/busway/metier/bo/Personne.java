@@ -12,6 +12,12 @@ public class Personne {
     public Personne() {
     }
 
+    public Personne(String nom, String prenom, String cin, Date dateNaissance) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.cin = cin;
+        this.dateNaissance = dateNaissance;
+    }
     /**
      * 
      */
