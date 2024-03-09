@@ -7,9 +7,11 @@ import java.util.*;
  */
 public class Bus {
 
-    /**
-     * Default constructor
-     */
+    private int capacite;
+    private String matricule;
+
+    ArrayList<Voyage> voyages ;
+
     public Bus() {
     }
 
@@ -18,9 +20,6 @@ public class Bus {
         this.matricule = matricule;
     }
 
-    private int capacite;
-
-    private String matricule;
 
     public int getNbPlaces() {
         return capacite;

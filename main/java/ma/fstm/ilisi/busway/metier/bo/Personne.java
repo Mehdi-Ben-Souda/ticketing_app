@@ -6,6 +6,12 @@ import java.util.*;
  */
 public class Personne {
 
+    private String nom;
+    private String prenom;
+    private String cin;
+    private Date dateNaissance;
+
+
     /**
      * Default constructor
      */
@@ -18,24 +24,6 @@ public class Personne {
         this.cin = cin;
         this.dateNaissance = dateNaissance;
     }
-    /**
-     * 
-     */
-    private String nom;
 
-    /**
-     * 
-     */
-    private String prenom;
-
-    /**
-     * 
-     */
-    private String cin;
-
-    /**
-     * 
-     */
-    private Date dateNaissance;
 
 }

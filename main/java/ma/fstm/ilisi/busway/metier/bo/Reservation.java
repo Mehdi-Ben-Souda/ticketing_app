@@ -7,9 +7,10 @@ import java.util.*;
  */
 public class Reservation {
 
+    private LocalTime heureReservation;
     private Station stationDepart;
     private Station stationArrivee;
-    private LocalTime heureReservation;
+
 
     public Reservation() {
     }
