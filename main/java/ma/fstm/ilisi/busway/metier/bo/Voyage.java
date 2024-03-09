@@ -1,5 +1,6 @@
 package ma.fstm.ilisi.busway.metier.bo;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Voyage {
@@ -8,14 +9,17 @@ public class Voyage {
     private LocalTime heureArrivée;
     private float prix;
     private String numeroLigne;
+    private int statut;
     private Bus bus;
     private Station depart;
     private Station arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
 
-    public Voyage(int idVoyage, String heureDepart,String heureArrivée, float prix, String numeroLigne, Station depart, Station arrivée, Bus bus) {
-        this.idVoyage = idVoyage;
+    private static int cmp = 0;
+
+    public Voyage(int idVoyage, String heureDepart,String heureArrivée, float prix, String numeroLigne, Station depart, Station arrivée, Bus bus) throws DateTimeParseException {
+        this.idVoyage = cmp++;
         this.prix = prix;
         this.numeroLigne = numeroLigne;
         this.bus = bus;
@@ -25,6 +29,7 @@ public class Voyage {
         this.heureDepart = LocalTime.parse(heureDepart);
         this.heureArrivée = LocalTime.parse(heureArrivée);
         this.reservations = new ArrayList<Reservation>();
+        this.statut=0;
     }
     public int getIdVoyage() {
         return idVoyage;
@@ -143,38 +148,9 @@ public class Voyage {
 
     public boolean verifierDisponibilite(Station stationD, Station stationA)
     {
-        int cpt=0 ;
-        int indexStationDepartReservation = -1;
-        int indexStationArriveeReservation = -1;
 
-        int indexStationArrivee=getindexStation(stationA);
-        int indexStationDepart=getindexStation(stationD);
-        if(indexStationDepart>=indexStationArrivee)
-        {
-            return false;
-        }
-
-        for (Reservation reservation : reservations) {
-
-            indexStationArriveeReservation=getindexStation(reservation.getStationArrivee());
-
-            indexStationDepartReservation=getindexStation(reservation.getStationDepart());
-
-
-                //Si la station de départ de la réservation est avant la station de départ du segment desiré et
-                // la station d'arrivée de la réservation est après la station de départ du segment désiré
-
-            if(indexStationArriveeReservation<=indexStationDepart)
-            {
-                cpt++;
-                continue;
-            }
-            if(indexStationDepartReservation>=indexStationArrivee) {
-                cpt++;
-                continue;
-            }
-        }
-        return bus.getCapacite() > (reservations.size()-cpt) ;
+        //return bus.getCapacite() > (reservations.size()-cpt) ;
+        return true;
     }
 
     public int getindexStation(Station station)

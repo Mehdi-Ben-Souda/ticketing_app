@@ -17,13 +17,25 @@ public class Station {
         this.adresse = adresse;
         this.voyage_arrets = new ArrayList<Arret>();
     }
+
+    public Station(String nomStation, String adresse, float latitude, float longitude) {
+        this.nomStation = nomStation;
+        this.adresse = adresse;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.voyage_arrets = new ArrayList<Arret>();
+    }
     private String nomStation;
     private String adresse;
+    private float latitude;
+    private float longitude;
     private ArrayList<Arret> voyage_arrets;
 
     private ArrayList<Voyage> voyage_arrivee;
 
     private ArrayList<Voyage> voyage_departs;
+
+    private ArrayList<Reservation> lesReservations;
 
     public void setNomStation(String nomStation) {
         this.nomStation = nomStation;
@@ -57,6 +69,21 @@ public class Station {
 		return adresse;
 	}
 
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 
 
     @Override
