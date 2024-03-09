@@ -1,4 +1,7 @@
-package ma.fstm.ilisi.busway.metier.bo;
+package ma.fstm.ilisi.busway.metier.bo.Catalogues;
+
+import ma.fstm.ilisi.busway.metier.bo.Station;
+import ma.fstm.ilisi.busway.metier.bo.Voyage;
 
 import java.util.*;
 
@@ -15,7 +18,7 @@ public class CatalogueVoyage {
         collection.put(V.getIdVoyage(), V);
     }
 
-    public List<Voyage> voyagesBySegment(Station SD,Station SA) {
+    public List<Voyage> voyagesBySegment(Station SD, Station SA) {
         List<Voyage> voyagesBySegment = new ArrayList<Voyage>();
         for (Map.Entry<Integer, Voyage> entry : collection.entrySet()) {
             Voyage voyage = entry.getValue();

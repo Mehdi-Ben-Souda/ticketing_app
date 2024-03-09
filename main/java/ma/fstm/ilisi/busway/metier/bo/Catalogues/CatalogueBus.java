@@ -2,7 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ma.fstm.ilisi.busway.metier.bo;
+package ma.fstm.ilisi.busway.metier.bo.Catalogues;
+
+import ma.fstm.ilisi.busway.metier.bo.Bus;
+import ma.fstm.ilisi.busway.metier.exceptions.BusDejaExiste;
 
 import java.util.TreeMap;
 
@@ -19,8 +22,11 @@ public class CatalogueBus {
        return collection.get(matricule);
    }
 
-    public void ajouterBus(Bus bus)
+    public void ajouterBus(Bus bus) throws BusDejaExiste
     {
+        if(collection.get(bus.getMatricule())!=null)
+            throw new BusDejaExiste();
+
          collection.put(bus.getMatricule(), bus);
     }
     public void supprimerBus(String matricule)
