@@ -5,15 +5,28 @@ import java.util.*;
  * 
  */
 public class Conducteur {
-
-    /**
-     * Default constructor
-     */
+    private Bus bus;
     private String matricule;
     private String nom;
     private String prenom;
     private String cin;
     private Date dateNaissance;
+
+    public Date getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public Bus getBus() {
+        return bus;
+    }
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
 
     public Conducteur(String matricule, String nom, String prenom, String cin, Date dateNaissance) {
         this.matricule = matricule;
@@ -54,4 +67,6 @@ public class Conducteur {
     public void setCin(String cin) {
         this.cin = cin;
     }
+
+
 }

@@ -13,6 +13,7 @@ import ma.fstm.ilisi.busway.metier.exceptions.BusDejaExiste;
 import ma.fstm.ilisi.busway.metier.exceptions.ConducteurDejaExiste;
 import ma.fstm.ilisi.busway.metier.exceptions.StationIntrouvable;
 import ma.fstm.ilisi.busway.metier.service.ServiceReservation;
+import ma.fstm.ilisi.busway.metier.service.ServiceVoyage;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -75,17 +76,16 @@ public class Controleur {
 
     }
 
-    public void ajouterVoyage(String matriculeBus,String matriculeConducteur,Date date, String heureDepart,String heureArrivee,
-                              String nomStationDepart , String nomStationArrivee , ArrayList<Arret> Arrets,float prix,String numeroLigne)
+    public void ajouterVoyage(String matriculeBus, String heureDepart,String heureArrivee,
+                              String nomStationDepart , String nomStationArrivee , ArrayList<Arret> arrets,float prix,String numeroLigne)
     {
         try {
             Bus bus=catalogueBus.chercherBusByMatricule(matriculeBus);
-            Conducteur conducteur=catalogueConducteur.chercherConducteurByMatricule(matriculeConducteur);
+            //Conducteur conducteur=catalogueConducteur.chercherConducteurByMatricule(matriculeConducteur);
             Station stationDepart=catalogueStation.chercherStationByNom(nomStationDepart);
             Station stationArrivee=catalogueStation.chercherStationByNom(nomStationArrivee);
 
-            Voyage nvVoyage= new Voyage(0,heureDepart,heureArrivee,prix,numeroLigne,stationDepart,stationArrivee,bus);
-            nvVoyage.setArrets(Arrets);
+            Voyage nvVoyage = new ServiceVoyage().ajouterVoyage(bus,stationDepart,arrets,stationArrivee,heureDepart,heureArrivee,prix,numeroLigne);
             catalogueVoyage.ajouterVoyage(nvVoyage);
         }
         catch (DateTimeParseException e) {
@@ -93,6 +93,8 @@ public class Controleur {
         }
         catch (StationIntrouvable e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }

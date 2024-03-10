@@ -15,11 +15,16 @@ public class Voyage {
     private Station arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
+    public int getStatut() {
+        return statut;
+    }
 
-    private static int cmp = 0;
+    public void setStatut(int statut) {
+        this.statut = statut;
+    }
 
-    public Voyage(int idVoyage, String heureDepart,String heureArrivée, float prix, String numeroLigne, Station depart, Station arrivée, Bus bus) throws DateTimeParseException {
-        this.idVoyage = cmp++;
+    public Voyage(int id,String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
+        this.idVoyage=id;
         this.prix = prix;
         this.numeroLigne = numeroLigne;
         this.bus = bus;
@@ -29,6 +34,7 @@ public class Voyage {
         this.heureDepart = LocalTime.parse(heureDepart);
         this.heureArrivée = LocalTime.parse(heureArrivée);
         this.reservations = new ArrayList<Reservation>();
+        this.arrets=arrets;
         this.statut=0;
     }
     public int getIdVoyage() {

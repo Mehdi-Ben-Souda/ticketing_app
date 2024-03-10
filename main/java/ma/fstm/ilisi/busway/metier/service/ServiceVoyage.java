@@ -4,14 +4,20 @@ package ma.fstm.ilisi.busway.metier.service;
 import ma.fstm.ilisi.busway.metier.bo.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ServiceVoyage {
 
-    public void ajouterVoyage(Bus bus , Date date,
-                              Station depart, Station arrivée)
-    {
-        //verifier si le bus a un voyage avec la meme date et presque les meme heures
+    public Voyage ajouterVoyage(Bus bus , Station depart, ArrayList<Arret> arrets, Station arrivée, String heureDepart,
+                                String heureArrivée, float prix, String numeroLigne) throws Exception {
+        Voyage voyage = new Voyage(0,heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
 
+        voyage.setArrets(arrets);
+        //ajouter le voyage dans la base de données
+        return voyage;
     }
+
+    public int getDescendu_now(Voyage voyage) {
+        return -1;
+    }
+
 }
