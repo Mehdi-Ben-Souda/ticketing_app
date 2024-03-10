@@ -15,7 +15,10 @@ public class Station {
     public Station(String nomStation, String adresse) {
         this.nomStation = nomStation;
         this.adresse = adresse;
+        this.lesReservations=new ArrayList<Reservation>();
         this.voyage_arrets = new ArrayList<Arret>();
+        this.voyage_arrivee = new ArrayList<Voyage>();
+        this.voyage_departs = new ArrayList<Voyage>();
     }
 
     public Station(String nomStation, String adresse, float latitude, float longitude) {
@@ -121,5 +124,8 @@ public class Station {
     }
     public void ajouterVoyageArrivee(Voyage voyage) {
         this.voyage_arrivee.add(voyage);
+    }
+
+    public void ajouterReservation(Reservation reservation) {
     }
 }

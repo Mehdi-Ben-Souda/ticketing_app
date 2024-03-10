@@ -25,12 +25,11 @@ public class Voyage {
         this.bus = bus;
         this.depart = depart;
         this.arrivée = arrivée;
-        this.arrets = new ArrayList<Arret>();
         this.heureDepart = LocalTime.parse(heureDepart);
         this.heureArrivée = LocalTime.parse(heureArrivée);
         this.reservations = new ArrayList<Reservation>();
         this.arrets=arrets;
-        this.statut=0;
+        this.statut=0;//faut commencer a -1 (hs) et ajouter methode demmarer voyage pour changer le statut en 0 ou 1
     }
     public int getIdVoyage() {
         return idVoyage;
@@ -151,6 +150,7 @@ public class Voyage {
 
     public boolean verifierDisponibilite(Station stationD)
     {
+        //System.out.println("Vérification de la disponibilité du bus pour le voyage entre les stations " + depart.getNomStation() + " et " + arrivée.getNomStation());
         //si voyage hors service
         if(statut == -1 )    return false;
         //recuperer l'index de stationD

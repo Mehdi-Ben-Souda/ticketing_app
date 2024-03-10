@@ -18,20 +18,20 @@ public class Menu {
     CatalogueVoyage catalogueVoyage;*/
 
     Menu() throws BusDejaExiste, StationIntrouvable {
-        //adding buses
+        controleur = new Controleur();
         controleur.ajouterBus("1234",50);
-        controleur.ajouterBus("1235",50);
+        controleur.ajouterBus("1235",2);
         controleur.ajouterBus("1236",50);
         controleur.ajouterBus("1237",50);
         controleur.ajouterBus("1238",50);
 
 
         //adding conducteurs
-        controleur.ajouterConducteur("1234","nom1","prenom1","cin1","2000-01-01");
-        controleur.ajouterConducteur("1235","nom2","prenom2","cin2","2001-02-01");
-        controleur.ajouterConducteur("1236","nom3","prenom3","cin3","2002-03-01");
-        controleur.ajouterConducteur("1237","nom4","prenom4","cin4","2003-04-01");
-        controleur.ajouterConducteur("1238","nom5","prenom5","cin5","2004-05-01");
+        controleur.ajouterConducteur("1234","nom1","prenom1","cin1","2000/01/01");
+        controleur.ajouterConducteur("1235","nom2","prenom2","cin2","2001/02/01");
+        controleur.ajouterConducteur("1236","nom3","prenom3","cin3","2002/03/01");
+        controleur.ajouterConducteur("1237","nom4","prenom4","cin4","2003/04/01");
+        controleur.ajouterConducteur("1238","nom5","prenom5","cin5","2004/05/01");
 
         //adding stations
         controleur.ajouterStation("Station1","Adresse1");
@@ -212,16 +212,15 @@ public class Menu {
                 System.out.println("Choose an option:");
                 System.out.println("1. reserver");
                 System.out.println("2. afficher busDisponible");
-                System.out.println("3. Exit");
+                System.out.println("3. afficher les reservations d'un voyage");
+                System.out.println("4. Exit");
                 int option = scanner.nextInt();
                 switch (option) {
                     case 1:
                         // Test reserver method
                         System.out.println("Enter station departure:");
                         String stationDepart = scanner.next();
-                        System.out.println("Enter station arrival:");
-                        String stationArrival = scanner.next();
-                        System.out.println("Enter passenger name:");
+                        /*System.out.println("Enter passenger name:");
                         String name = scanner.next();
                         System.out.println("Enter passenger surname:");
                         String surname = scanner.next();
@@ -230,10 +229,10 @@ public class Menu {
                         System.out.println("Enter passenger birth date (yyyy-MM-dd):");
                         String birthDate = scanner.next();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date = sdf.parse(birthDate);
+                        Date date = sdf.parse(birthDate);*/
                         System.out.println("Enter voyage id:");
                         int voyage = scanner.nextInt();
-                        menu.controleur.reserver(stationDepart, new Passager(name, surname, cin, date),voyage);
+                        menu.controleur.reserver(stationDepart, new Passager(),voyage);
                         break;
                     case 2:
                         // Test busDisponible method
@@ -243,8 +242,12 @@ public class Menu {
                         String lineNumber = scanner.next();
                         menu.controleur.LesBusDisponibles(stationDepartBus, lineNumber);
                         break;
-                    case 3:
-                        // Exit
+                    case 3://afficher les reservations d'un voyage
+                        System.out.println("Enter voyage id:");
+                        int voyageId = scanner.nextInt();
+                        menu.controleur.afficherReservation(voyageId);
+                        break;
+                    case 4://exit
                         System.out.println("Exiting...");
                         scanner.close();
                         System.exit(0);

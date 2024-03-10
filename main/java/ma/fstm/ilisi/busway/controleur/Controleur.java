@@ -56,8 +56,8 @@ public class Controleur {
 
     }
     public void LesBusDisponibles(String nomStationD, String nligne){
-
         try {
+            System.out.println("Les bus disponibles pour la station "+nomStationD+" sont :");
             //recuperer la stations de depart
             Station SD = catalogueStation.chercherStationByNom(nomStationD);
             //recuperer les voyages
@@ -139,4 +139,17 @@ public class Controleur {
         catalogueBus.supprimerBus(matricule);
     }
 
+    public void afficherReservation(int voyageId) {
+        try {
+            Voyage voyage = catalogueVoyage.chercherVoyageByID(voyageId);
+            System.out.println("Les reservations pour le voyage "+voyageId+" sont :");
+            for(Reservation r:voyage.getReservations())
+            {
+                System.out.println(r);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -11,7 +11,7 @@ public class ServiceVoyage {
                                 String heureArrivée, float prix, String numeroLigne) throws Exception {
         Voyage voyage = new Voyage(idVoyage,heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
 
-        voyage.setArrets(arrets);
+        bus.getVoyages().add(voyage);
         //ajouter le voyage dans la base de données
         return voyage;
     }

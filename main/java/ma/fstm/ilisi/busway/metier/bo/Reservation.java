@@ -9,7 +9,7 @@ public class Reservation {
 
     private LocalTime heureReservation;
     private Station stationDepart;
-
+    // il faut ajouter le passaaaggeeeeeeer
 
     public Reservation() {
     }
@@ -29,5 +29,11 @@ public class Reservation {
         return heureReservation;
     }
 
-
+    public String toString()
+    {
+        return "Reservation{" +
+                "heureReservation=" + heureReservation +
+                ", stationDepart=" + stationDepart +
+                '}';
+    }
 }

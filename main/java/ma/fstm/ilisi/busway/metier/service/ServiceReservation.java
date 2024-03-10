@@ -22,6 +22,7 @@ public class ServiceReservation
         {
             Reservation reservation=new Reservation(stationD,LocalTime.now());
             voyage.ajouterReservation(reservation);
+            stationD.ajouterReservation(reservation);
             //to do :appel a DAOReservation
         }
         //to do : si non lancer une exception
