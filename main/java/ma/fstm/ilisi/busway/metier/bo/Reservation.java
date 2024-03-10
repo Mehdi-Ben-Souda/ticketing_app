@@ -9,15 +9,13 @@ public class Reservation {
 
     private LocalTime heureReservation;
     private Station stationDepart;
-    private Station stationArrivee;
 
 
     public Reservation() {
     }
 
-    public Reservation(Station stationDepart, Station stationArrivee, LocalTime heureReservation) {
+    public Reservation(Station stationDepart, LocalTime heureReservation) {
         this.stationDepart = stationDepart;
-        this.stationArrivee = stationArrivee;
         this.heureReservation = heureReservation;
     }
 
@@ -25,9 +23,7 @@ public class Reservation {
         return stationDepart;
     }
 
-    public Station getStationArrivee() {
-        return stationArrivee;
-    }
+
 
     public LocalTime getHeureReservation() {
         return heureReservation;

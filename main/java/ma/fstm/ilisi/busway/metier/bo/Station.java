@@ -24,6 +24,8 @@ public class Station {
         this.latitude = latitude;
         this.longitude = longitude;
         this.voyage_arrets = new ArrayList<Arret>();
+        this.voyage_arrivee = new ArrayList<Voyage>();
+        this.voyage_departs = new ArrayList<Voyage>();
     }
     private String nomStation;
     private String adresse;
@@ -112,5 +114,12 @@ public class Station {
     public void ajouterArret(Arret arret)
     {
         voyage_arrets.add(arret);
+    }
+
+    public void ajouterVoyageDepart(Voyage voyage) {
+        this.voyage_departs.add(voyage);
+    }
+    public void ajouterVoyageArrivee(Voyage voyage) {
+        this.voyage_arrivee.add(voyage);
     }
 }

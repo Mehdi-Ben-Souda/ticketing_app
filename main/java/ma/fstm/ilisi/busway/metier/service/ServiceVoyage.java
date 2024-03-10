@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class ServiceVoyage {
 
-    public Voyage ajouterVoyage(Bus bus , Station depart, ArrayList<Arret> arrets, Station arrivée, String heureDepart,
+    public Voyage ajouterVoyage(int idVoyage,Bus bus , Station depart, ArrayList<Arret> arrets, Station arrivée, String heureDepart,
                                 String heureArrivée, float prix, String numeroLigne) throws Exception {
-        Voyage voyage = new Voyage(0,heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
+        Voyage voyage = new Voyage(idVoyage,heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
 
         voyage.setArrets(arrets);
         //ajouter le voyage dans la base de données

@@ -15,12 +15,12 @@ import java.util.Date;
  */
 public class ServiceReservation
 {
-    public void reserver(Station stationD, Station stationA, Passager passager, Voyage voyage)
+    public void reserver(Station stationD, Passager passager, Voyage voyage)
     {
         //verifier la disponibilite du bus pour le voyage entre les stations stationD et stationA
-        if(voyage.verifierDisponibilite(stationD, stationA))
+        if(voyage.verifierDisponibilite(stationD))
         {
-            Reservation reservation=new Reservation(stationD,stationA, LocalTime.now());
+            Reservation reservation=new Reservation(stationD,LocalTime.now());
             voyage.ajouterReservation(reservation);
             //to do :appel a DAOReservation
         }

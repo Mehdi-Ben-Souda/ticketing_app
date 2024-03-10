@@ -8,11 +8,15 @@ import java.time.*;
 public class Arret{
     private LocalTime heureArret;
     private Station station;
+    private int nbDescendu;
+    private boolean traversed;
     private Voyage voyage;
     public Arret(String heureArret,Station station,Voyage voyage) {
         this.heureArret = LocalTime.parse(heureArret);
         this.station = station;
         this.voyage = voyage;
+        this.nbDescendu = 0;
+        traversed = false;
     }
 
     public void setStation(Station station) {
@@ -33,5 +37,21 @@ public class Arret{
                 "heureArret=" + heureArret +
                 ", station=" + station +
                 '}';
+    }
+
+    public int getNbDescendu() {
+        return nbDescendu;
+    }
+
+    public void setNbDescendu(int nbDescendu) {
+        this.nbDescendu = nbDescendu;
+    }
+
+    public boolean isTraversed() {
+        return traversed;
+    }
+
+    public void setTraversed(boolean traversed) {
+        this.traversed = traversed;
     }
 }

@@ -18,16 +18,15 @@ public class CatalogueVoyage {
         collection.put(V.getIdVoyage(), V);
     }
 
-    public List<Voyage> voyagesBySegment(Station SD, Station SA) {
-        List<Voyage> voyagesBySegment = new ArrayList<Voyage>();
+    public List<Voyage> voyagesByStation(Station SD,String nLigne) {
+        List<Voyage> voyagesByStation = new ArrayList<Voyage>();
         for (Map.Entry<Integer, Voyage> entry : collection.entrySet()) {
             Voyage voyage = entry.getValue();
-                if (voyage.passeParStation(SD) && voyage.passeParStation(SA)) {
-                    if(voyage.getindexStation(SD) < voyage.getindexStation(SA))
-                        voyagesBySegment.add(voyage);
+                if (voyage.passeParStation(SD) && voyage.getNumeroLigne().equals(nLigne)) {
+                        voyagesByStation.add(voyage);
                 }
         }
-        return voyagesBySegment;
+        return voyagesByStation;
     }
 
 }

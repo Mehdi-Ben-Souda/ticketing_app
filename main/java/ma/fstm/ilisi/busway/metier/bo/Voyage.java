@@ -9,19 +9,14 @@ public class Voyage {
     private LocalTime heureArrivée;
     private float prix;
     private String numeroLigne;
-    private int statut;
+    private int statut; //-1:Hors Service ou voyage termine,
+                        //0:voyage ouvert a la reservation(n'a pas encore fait le depart)
+                        //1:voyage en cours (il a fait le depart)
     private Bus bus;
     private Station depart;
     private Station arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
-    public int getStatut() {
-        return statut;
-    }
-
-    public void setStatut(int statut) {
-        this.statut = statut;
-    }
 
     public Voyage(int id,String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
         this.idVoyage=id;
@@ -129,6 +124,8 @@ public class Voyage {
                 ", prix=" + prix +
                 ", numeroLigne='" + numeroLigne +
                 ", bus=" + bus +
+                ", Depart de :" + depart.getNomStation() +
+                ", Arrivee a :" + arrivée.getNomStation() +
                 '}';
     }
 
@@ -152,11 +149,31 @@ public class Voyage {
         return false;
     }
 
-    public boolean verifierDisponibilite(Station stationD, Station stationA)
+    public boolean verifierDisponibilite(Station stationD)
     {
+        //si voyage hors service
+        if(statut == -1 )    return false;
+        //recuperer l'index de stationD
+        int index = getindexStation(stationD);
+        //on peut pas reserver du station d'arrivee
+        if(index == arrets.size()+1)    return false;
+        //cas de reservation depuis la station de depart mais le bus a deja fait le depart
+        if(index == -1 && statut == 1)  return false;
 
-        //return bus.getCapacite() > (reservations.size()-cpt) ;
-        return true;
+        //calcule de places disponible
+        int nbPlaceDispo =  bus.getCapacite()-reservations.size();
+        if(index > -1 ){
+            //si le bus a deja traverser cette station
+            if(  arrets.get(index).isTraversed())   return false;
+            for(Arret ar : arrets){
+                if(ar.getStation().equals(stationD)){
+                    break;
+                }else{
+                    nbPlaceDispo = nbPlaceDispo + ar.getNbDescendu();
+                }
+            }
+        }
+        return nbPlaceDispo > 0 ;
     }
 
     public int getindexStation(Station station)
@@ -174,5 +191,13 @@ public class Voyage {
 
             return arrets.indexOf(station);
         }
+    }
+
+    public int getStatut() {
+        return statut;
+    }
+
+    public void setStatut(int statut) {
+        this.statut = statut;
     }
 }

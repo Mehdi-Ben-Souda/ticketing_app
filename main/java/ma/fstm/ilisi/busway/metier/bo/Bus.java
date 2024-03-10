@@ -19,12 +19,6 @@ public class Bus {
         this.capacite = capacite;
         this.matricule = matricule;
     }
-
-
-    public int getNbPlaces() {
-        return capacite;
-    }
-
     public String getMatricule() {
         return matricule;
     }

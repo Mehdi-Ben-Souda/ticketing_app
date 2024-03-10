@@ -15,7 +15,6 @@ import ma.fstm.ilisi.busway.metier.exceptions.StationIntrouvable;
 import ma.fstm.ilisi.busway.metier.service.ServiceReservation;
 import ma.fstm.ilisi.busway.metier.service.ServiceVoyage;
 
-import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
@@ -25,11 +24,16 @@ import java.util.*;
  */
 public class Controleur {
     
-    private CatalogueBus catalogueBus;
-    private CatalogueStation catalogueStation;
-    private CatalogueVoyage catalogueVoyage;
+    public CatalogueBus catalogueBus;
+    public CatalogueStation catalogueStation;
+    public CatalogueVoyage catalogueVoyage;
     private CatalogueConducteur catalogueConducteur;
-
+    public  Controleur(){
+        this.catalogueBus = new CatalogueBus();
+        this.catalogueStation = new CatalogueStation();
+        this.catalogueVoyage = new CatalogueVoyage();
+        this.catalogueConducteur = new CatalogueConducteur();
+    }
     public Controleur(CatalogueBus catalogueBus, CatalogueStation catalogueStation, CatalogueVoyage catalogueVoyage, CatalogueConducteur catalogueConducteur) {
         this.catalogueBus = catalogueBus;
         this.catalogueStation = catalogueStation;
@@ -38,31 +42,29 @@ public class Controleur {
     }
 
 
-    public void reserver(String idStationD,String idStationA,Passager passager,int IdVoyage)
+    public void reserver(String idStationD,Passager passager,int IdVoyage)
     {
         try {
-            Station stationA=catalogueStation.chercherStationByNom(idStationA);
             Station stationD=catalogueStation.chercherStationByNom(idStationD);
             Voyage voyage=catalogueVoyage.chercherVoyageByID(IdVoyage);
 
-            new ServiceReservation().reserver(stationD,stationA,passager,voyage);
+            new ServiceReservation().reserver(stationD,passager,voyage);
         }
         catch (StationIntrouvable e) {
             e.printStackTrace();
             }
 
     }
-    public void LesBusDisponibles(String nomStationD, String nomStationA){
+    public void LesBusDisponibles(String nomStationD, String nligne){
 
         try {
-            //recuperer les stations de depart et d'arrive
+            //recuperer la stations de depart
             Station SD = catalogueStation.chercherStationByNom(nomStationD);
-            Station SA = catalogueStation.chercherStationByNom(nomStationA);
             //recuperer les voyages
-            List<Voyage> Voyages = catalogueVoyage.voyagesBySegment(SD,SA);// Mzyana
+            List<Voyage> Voyages = catalogueVoyage.voyagesByStation(SD,nligne);// Mzyana
             List<Voyage> vDisponibles = new ArrayList<Voyage>();
             for(Voyage v: Voyages){
-                if(v.verifierDisponibilite(SD, SA)){// Verifier disponibilité est a changer
+                if(v.verifierDisponibilite(SD)){// Verifier disponibilité est a changer
                     //POV:Le bus du voyage v est disponible
                     vDisponibles.add(v);
                     System.out.println((v));
@@ -76,16 +78,17 @@ public class Controleur {
 
     }
 
-    public void ajouterVoyage(String matriculeBus, String heureDepart,String heureArrivee,
-                              String nomStationDepart , String nomStationArrivee , ArrayList<Arret> arrets,float prix,String numeroLigne)
+
+    public void ajouterVoyage(int idVoyage,String matriculeBus, String matriculeConducteur,String heureDepart, String heureArrivee,
+                              String nomStationDepart , String nomStationArrivee , ArrayList<Arret> Arrets, float prix, String numeroLigne)
     {
         try {
             Bus bus=catalogueBus.chercherBusByMatricule(matriculeBus);
-            //Conducteur conducteur=catalogueConducteur.chercherConducteurByMatricule(matriculeConducteur);
+            Conducteur conducteur=catalogueConducteur.chercherConducteurByMatricule(matriculeConducteur);
             Station stationDepart=catalogueStation.chercherStationByNom(nomStationDepart);
             Station stationArrivee=catalogueStation.chercherStationByNom(nomStationArrivee);
 
-            Voyage nvVoyage = new ServiceVoyage().ajouterVoyage(bus,stationDepart,arrets,stationArrivee,heureDepart,heureArrivee,prix,numeroLigne);
+            Voyage nvVoyage = new ServiceVoyage().ajouterVoyage(idVoyage,bus,stationDepart,Arrets,stationArrivee,heureDepart,heureArrivee,prix,numeroLigne);
             catalogueVoyage.ajouterVoyage(nvVoyage);
         }
         catch (DateTimeParseException e) {
@@ -116,10 +119,11 @@ public class Controleur {
         catalogueStation.ajouterStation(new Station(nom,adresse));
     }
 
-    public void ajouterConducteur(String matricule, String nom, String prenom, String cin, Date dateNaissance)
+    public void ajouterConducteur(String matricule, String nom, String prenom, String cin, String dateNaissance)
     {
         try {
-            catalogueConducteur.ajouterConducteur(new Conducteur(matricule,nom,prenom,cin,dateNaissance));
+            catalogueConducteur.ajouterConducteur(new Conducteur(matricule,nom,prenom,cin,new Date(dateNaissance)
+            ));
         }
         catch (ConducteurDejaExiste e) {
             e.printStackTrace();
