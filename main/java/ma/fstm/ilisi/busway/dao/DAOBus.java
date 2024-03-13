@@ -13,6 +13,7 @@ public class DAOBus {
         try (Transaction tx = Connexion.getSession().beginTransaction()) {
             Result mat = tx.run("CREATE (a:BUS {matricule: $matricule, capacite: $capacite}) ",parameters("matricule", bus.getMatricule(), "capacite", bus.getCapacite()));
             tx.commit();
+            tx.close();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -28,6 +29,7 @@ public class DAOBus {
                 busTreeMap.put(record.get("matricule").asString(), new Bus( record.get("capacite").asInt(),record.get("matricule").asString()));
             }
             tx.commit();
+            tx.close();
             return busTreeMap;
         }
         catch (Exception e) {

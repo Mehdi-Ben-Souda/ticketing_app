@@ -1,5 +1,6 @@
 package ma.fstm.ilisi.busway.metier.bo.Catalogues;
 
+import ma.fstm.ilisi.busway.dao.DAOConducteur;
 import ma.fstm.ilisi.busway.metier.bo.Conducteur;
 import ma.fstm.ilisi.busway.metier.exceptions.ConducteurDejaExiste;
 
@@ -22,5 +23,9 @@ public class CatalogueConducteur {
     }
 
 
+    public void retreiveTousLesConducteurs()
+    {
+//        collection = new DAOConducteur().;
+    }
 
 }

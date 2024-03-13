@@ -46,6 +46,7 @@ public class DAOVoyage {
 
             tx.run(requette);
             tx.commit();
+            tx.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,6 +60,7 @@ public class DAOVoyage {
 
             int sumNbr = mat.single().get("nbr").asInt();
             tx.commit();
+            tx.close();
             return sumNbr;
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,9 +69,9 @@ public class DAOVoyage {
 
     }
 
-    public Map<Integer, Voyage> retrieveAllVoyages() {
+    public TreeMap<Integer, Voyage> retrieveAllVoyages() {
         try (Session session = Connexion.getSession()) {
-            Map<Integer, Voyage> voyageMap = new TreeMap<>();
+            TreeMap<Integer, Voyage> voyageMap = new TreeMap<>();
 
             try (Transaction tx = session.beginTransaction()) {
                 Result mat = tx.run("MATCH (bus:BUS)-[r:ASSOCIE_LIGNE]->(stationD:STATION) " +
@@ -121,6 +123,7 @@ public class DAOVoyage {
                     voyageMap.put(record.get("idVoyage").asInt(), voyage);
                 }
                 tx.commit();
+                tx.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

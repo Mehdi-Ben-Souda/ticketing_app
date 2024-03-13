@@ -15,6 +15,7 @@ public class DAOStation {
             Result mat = tx.run("CREATE (c:STATION {nomStation: $nomStation, adresse: $adresse,latitude:$latitude , longitude:$longitude}) "
                     ,parameters("nomStation", station.getNomStation(), "adresse", station.getAdresse(),"latitude",station.getLatitude(),"longitude",station.getLongitude()));
             tx.commit();
+            tx.close();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -30,6 +31,7 @@ public class DAOStation {
                 stationTreeMap.put(record.get("nomStation").asString(), new Station(record.get("nomStation").asString(), record.get("adresse").asString(), record.get("latitude").asFloat(), record.get("longitude").asFloat()));
             }
             tx.commit();
+            tx.close();
             return stationTreeMap;
         }
         catch (Exception e) {

@@ -1,5 +1,8 @@
 package ma.fstm.ilisi.busway.metier.bo.Catalogues;
 
+import ma.fstm.ilisi.busway.dao.DAOReservation;
+import ma.fstm.ilisi.busway.dao.DAOVoyage;
+import ma.fstm.ilisi.busway.metier.bo.Reservation;
 import ma.fstm.ilisi.busway.metier.bo.Station;
 import ma.fstm.ilisi.busway.metier.bo.Voyage;
 
@@ -27,6 +30,13 @@ public class CatalogueVoyage {
                 }
         }
         return voyagesByStation;
+    }
+
+    public void retreiveTousLesVoyages() {
+        collection=new DAOVoyage().retrieveAllVoyages();
+        collection.forEach((k,v)->{
+            v.setReservations(new DAOReservation().retreiveReservationByVoyage(v));
+        });
     }
 
 }

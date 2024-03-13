@@ -4,6 +4,7 @@
  */
 package ma.fstm.ilisi.busway.metier.bo.Catalogues;
 
+import ma.fstm.ilisi.busway.dao.DAOStation;
 import ma.fstm.ilisi.busway.metier.bo.Station;
 import ma.fstm.ilisi.busway.metier.exceptions.StationIntrouvable;
 
@@ -30,5 +31,8 @@ public class CatalogueStation {
         collection.put(station.getNomStation(), station);
     }
 
-
+    public void  retreiveTousLesStations()
+    {
+        collection=new DAOStation().retrieveAllStations();
+    }
 }

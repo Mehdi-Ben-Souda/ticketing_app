@@ -4,6 +4,7 @@
  */
 package ma.fstm.ilisi.busway.metier.service;
 
+import ma.fstm.ilisi.busway.dao.DAOReservation;
 import ma.fstm.ilisi.busway.metier.bo.*;
 
 import java.time.LocalTime;
@@ -20,10 +21,10 @@ public class ServiceReservation
         //verifier la disponibilite du bus pour le voyage entre les stations stationD et stationA
         if(voyage.verifierDisponibilite(stationD))
         {
-            Reservation reservation=new Reservation(stationD,LocalTime.now());
+            Reservation reservation=new Reservation(stationD,LocalTime.now(),voyage);
             voyage.ajouterReservation(reservation);
             stationD.ajouterReservation(reservation);
-            //to do :appel a DAOReservation
+            new DAOReservation().ajouterReservation(reservation);
         }
         //to do : si non lancer une exception
     }

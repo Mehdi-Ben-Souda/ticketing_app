@@ -1,4 +1,7 @@
 package ma.fstm.ilisi.busway.metier.bo;
+import ma.fstm.ilisi.busway.dao.DAOReservation;
+import ma.fstm.ilisi.busway.dao.DAOVoyage;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -10,16 +13,16 @@ public class Voyage {
     private float prix;
     private String numeroLigne;
     private int statut; //-1:Hors Service ou voyage termine,
-                        //0:voyage ouvert a la reservation(n'a pas encore fait le depart)
-                        //1:voyage en cours (il a fait le depart)
+    //0:voyage ouvert a la reservation(n'a pas encore fait le depart)
+    //1:voyage en cours (il a fait le depart)
     private Bus bus;
     private Station depart;
     private Station arrivée;
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
 
-    public Voyage(int id,String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
-        this.idVoyage=id;
+    public Voyage(int id, String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
+        this.idVoyage = id;
         this.prix = prix;
         this.numeroLigne = numeroLigne;
         this.bus = bus;
@@ -28,15 +31,18 @@ public class Voyage {
         this.heureDepart = LocalTime.parse(heureDepart);
         this.heureArrivée = LocalTime.parse(heureArrivée);
         this.reservations = new ArrayList<Reservation>();
-        this.arrets=arrets;
-        this.statut=0;//faut commencer a -1 (hs) et ajouter methode demmarer voyage pour changer le statut en 0 ou 1
+        this.arrets = arrets;
+        this.statut = 0;//faut commencer a -1 (hs) et ajouter methode demmarer voyage pour changer le statut en 0 ou 1
     }
+
     public int getIdVoyage() {
         return idVoyage;
     }
+
     public void setIdVoyage(int idVoyage) {
         this.idVoyage = idVoyage;
     }
+
     public float getPrix() {
         return prix;
     }
@@ -56,6 +62,7 @@ public class Voyage {
     public void setBus(Bus bus) {
         this.bus = bus;
     }
+
     public Bus getBus() {
         return bus;
     }
@@ -79,6 +86,7 @@ public class Voyage {
     public void setDepart(Station depart) {
         this.depart = depart;
     }
+
     public Station getDepart() {
         return depart;
     }
@@ -103,16 +111,15 @@ public class Voyage {
         return arrets;
     }
 
-    public void setArrets(ArrayList<Arret>arrets) {
+    public void setArrets(ArrayList<Arret> arrets) {
         this.arrets = arrets;
     }
 
-    public void ajouterReservation(Reservation reservation)
-    {
+    public void ajouterReservation(Reservation reservation) {
         reservations.add(reservation);
     }
-    public void ajouterArret(Arret arret)
-    {
+
+    public void ajouterArret(Arret arret) {
         arrets.add(arret);
     }
 
@@ -148,45 +155,39 @@ public class Voyage {
         return false;
     }
 
-    public boolean verifierDisponibilite(Station stationD)
-    {
+    public boolean verifierDisponibilite(Station stationD) {
         //System.out.println("Vérification de la disponibilité du bus pour le voyage entre les stations " + depart.getNomStation() + " et " + arrivée.getNomStation());
         //si voyage hors service
-        if(statut == -1 )    return false;
+        if (statut == -1) return false;
         //recuperer l'index de stationD
         int index = getindexStation(stationD);
         //on peut pas reserver du station d'arrivee
-        if(index == arrets.size()+1)    return false;
+        if (index == arrets.size() + 1) return false;
         //cas de reservation depuis la station de depart mais le bus a deja fait le depart
-        if(index == -1 && statut == 1)  return false;
+        if (index == -1 && statut == 1) return false;
 
         //calcule de places disponible
-        int nbPlaceDispo =  bus.getCapacite()-reservations.size();
-        if(index > -1 ){
+        int nbPlaceDispo = bus.getCapacite() - reservations.size();
+        if (index > -1) {
             //si le bus a deja traverser cette station
-            if(  arrets.get(index).isTraversed())   return false;
-            for(Arret ar : arrets){
-                if(ar.getStation().equals(stationD)){
+            if (arrets.get(index).isTraversed()) return false;
+            for (Arret ar : arrets) {
+                if (ar.getStation().equals(stationD)) {
                     break;
-                }else{
-                    nbPlaceDispo = nbPlaceDispo + ar.getNbDescendu();
+                } else {
+                    nbPlaceDispo = nbPlaceDispo + new DAOVoyage().getDescendu_now(this);
                 }
             }
         }
-        return nbPlaceDispo > 0 ;
+        return nbPlaceDispo > 0;
     }
 
-    public int getindexStation(Station station)
-    {
-        if(station.equals(depart))
-        {
+    public int getindexStation(Station station) {
+        if (station.equals(depart)) {
             return -1;
-        }
-        else
-        {
-            if(station.equals(arrivée))
-            {
-                return arrets.size()+1;
+        } else {
+            if (station.equals(arrivée)) {
+                return arrets.size() + 1;
             }
 
             return arrets.indexOf(station);
@@ -200,4 +201,6 @@ public class Voyage {
     public void setStatut(int statut) {
         this.statut = statut;
     }
+
+
 }

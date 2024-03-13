@@ -4,6 +4,7 @@
  */
 package ma.fstm.ilisi.busway.metier.bo.Catalogues;
 
+import ma.fstm.ilisi.busway.dao.DAOBus;
 import ma.fstm.ilisi.busway.metier.bo.Bus;
 import ma.fstm.ilisi.busway.metier.exceptions.BusDejaExiste;
 
@@ -34,4 +35,8 @@ public class CatalogueBus {
         collection.remove(matricule);
     }
 
+    public void retrieveTousLesBus()
+    {
+        collection=new DAOBus().retrieveAllBuses();
+    }
 }

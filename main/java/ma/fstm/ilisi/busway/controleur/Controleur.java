@@ -33,6 +33,9 @@ public class Controleur {
         this.catalogueStation = new CatalogueStation();
         this.catalogueVoyage = new CatalogueVoyage();
         this.catalogueConducteur = new CatalogueConducteur();
+        catalogueBus.retrieveTousLesBus();
+        catalogueStation.retreiveTousLesStations();
+        catalogueVoyage.retreiveTousLesVoyages();
     }
     public Controleur(CatalogueBus catalogueBus, CatalogueStation catalogueStation, CatalogueVoyage catalogueVoyage, CatalogueConducteur catalogueConducteur) {
         this.catalogueBus = catalogueBus;
@@ -142,13 +145,11 @@ public class Controleur {
     public void afficherReservation(int voyageId) {
         try {
             Voyage voyage = catalogueVoyage.chercherVoyageByID(voyageId);
-            System.out.println("Les reservations pour le voyage "+voyageId+" sont :");
-            for(Reservation r:voyage.getReservations())
-            {
+            System.out.println("Les reservations pour le voyage " + voyageId + " sont :");
+            for (Reservation r : voyage.getReservations()) {
                 System.out.println(r);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
