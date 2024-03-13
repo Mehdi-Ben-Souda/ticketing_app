@@ -31,6 +31,16 @@ public class CatalogueVoyage {
         }
         return voyagesByStation;
     }
+    public List<Voyage> voyagesByStation(Station SD) {
+        List<Voyage> voyagesByStation = new ArrayList<Voyage>();
+        for (Map.Entry<Integer, Voyage> entry : collection.entrySet()) {
+            Voyage voyage = entry.getValue();
+                if (voyage.passeParStation(SD)) {
+                        voyagesByStation.add(voyage);
+                }
+        }
+        return voyagesByStation;
+    }
 
     public void retreiveTousLesVoyages() {
         collection=new DAOVoyage().retrieveAllVoyages();

@@ -58,6 +58,25 @@ public class Controleur {
             }
 
     }
+    public void ligneParStation(String nomStationD){
+        try {
+            System.out.println("Les lignes disponibles pour la station "+nomStationD+" sont :");
+            //recuperer la stations de depart
+            Station SD = catalogueStation.chercherStationByNom(nomStationD);
+
+            List<String> lignes = new ArrayList<String>();
+            for(Voyage v: catalogueVoyage.voyagesByStation(SD)){// Mzyana
+                if(lignes.indexOf(v.getNumeroLigne())==-1){
+                    lignes.add(v.getNumeroLigne());
+                    System.out.println(v.getNumeroLigne());
+                }
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void LesBusDisponibles(String nomStationD, String nligne){
         try {
             System.out.println("Les bus disponibles pour la station "+nomStationD+" sont :");

@@ -238,6 +238,7 @@ public class Menu {
                         // Test busDisponible method
                         System.out.println("Enter station departure:");
                         String stationDepartBus = scanner.next();
+                        menu.controleur.ligneParStation(stationDepartBus);
                         System.out.println("Enter line Number:");
                         String lineNumber = scanner.next();
                         menu.controleur.LesBusDisponibles(stationDepartBus, lineNumber);
