@@ -4,6 +4,7 @@ import ma.fstm.ilisi.busway.metier.bo.Reservation;
 import ma.fstm.ilisi.busway.metier.bo.Station;
 import ma.fstm.ilisi.busway.metier.bo.Voyage;
 import org.neo4j.driver.Result;
+import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 import org.neo4j.driver.internal.value.LocalTimeValue;
 
@@ -14,7 +15,8 @@ import static org.neo4j.driver.Values.parameters;
 
 public class DAOReservation {
     public void ajouterReservation(Reservation reservation) {
-        try (Transaction tx = Connexion.getSession().beginTransaction()) {
+        try (Session session = Connexion.getSession()) {
+        try (Transaction tx = session.beginTransaction()) {
             Result mat = tx.run(
                     "MATCH (stationD:STATION {nomStation: $nomStation}) " +
                             "CREATE (reservation:RESERVATION {heure_reservation: $heure_reservation, ligne: $ligne}) " +
@@ -26,11 +28,12 @@ public class DAOReservation {
                     )
             );
             tx.commit();
-            tx.close();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        }
+
     }
     public ArrayList<Reservation> retreiveReservationByVoyage(Voyage voyage)
     {
@@ -46,7 +49,6 @@ public class DAOReservation {
                 list.add(new Reservation(station,record.get("heure_reservation").asLocalTime(),voyage));
             }
             tx.commit();
-            tx.close();
             return list;
         }
         catch (Exception e) {

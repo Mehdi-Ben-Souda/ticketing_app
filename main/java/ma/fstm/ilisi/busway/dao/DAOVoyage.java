@@ -1,14 +1,13 @@
 package ma.fstm.ilisi.busway.dao;
 
-import ma.fstm.ilisi.busway.metier.bo.Arret;
-import ma.fstm.ilisi.busway.metier.bo.Bus;
-import ma.fstm.ilisi.busway.metier.bo.Station;
-import ma.fstm.ilisi.busway.metier.bo.Voyage;
+import ma.fstm.ilisi.busway.metier.bo.*;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
+import org.neo4j.driver.types.Node;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,7 +15,7 @@ import java.util.TreeMap;
 import static org.neo4j.driver.Values.parameters;
 
 public class DAOVoyage {
-    public void ajouterVoyage(Voyage voyage) {
+    public int ajouterVoyage(Voyage voyage) {
         try (Transaction tx = Connexion.getSession().beginTransaction()) {
             String requette;
             for (int i = 0; i < voyage.getArrets().size(); i++) {
@@ -42,13 +41,14 @@ public class DAOVoyage {
             requette = " MATCH (stationD:STATION {nomStation:'" + voyage.getDepart().getNomStation() + "'})";
             requette += " MATCH (bus:BUS {matricule:'" + voyage.getBus().getMatricule() + "'})";
             requette += " WITH bus,stationD ";
-            requette += " CREATE (bus)-[:ASSOCIE_LIGNE{ligne:'" + voyage.getNumeroLigne() + "',heureDepart:'" + voyage.getHeureDepart() + "'}]->(stationD)";
-
-            tx.run(requette);
+            requette += " CREATE (bus)-[idligne:ASSOCIE_LIGNE{ligne:'" + voyage.getNumeroLigne() + "',heureDepart:'" + voyage.getHeureDepart() + "'}]->(stationD) RETURN id(idligne) AS id";
+            Result result = tx.run(requette);
+            int idVoyage = result.single().get("id").asInt();
             tx.commit();
-            tx.close();
+            return idVoyage;
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         }
 
     }
@@ -75,64 +75,108 @@ public class DAOVoyage {
 
             try (Transaction tx = session.beginTransaction()) {
                 Result mat = tx.run("MATCH (bus:BUS)-[r:ASSOCIE_LIGNE]->(stationD:STATION) " +
-                        "RETURN bus.matricule AS matricule, bus.capacite as capacite, r.ligne AS ligne, r.heureDepart AS heureDepart, " +
-                        "stationD.nomStation AS nomStationD, stationD.adresse AS adresse, stationD.latitude AS latitude, stationD.longitude AS longitude, ID(r) as idVoyage");
+                        "RETURN bus.matricule AS matricule, bus.capacite as capacite, r.ligne AS ligne, " +
+                        "r.heureDepart AS heureDepart, ID(r) as idVoyage," +
+                        "stationD");
 
                 while (mat.hasNext()) {
                     Record record = mat.next();
+                    Node stationDNode = record.get("stationD").asNode();
+
                     Bus bus = new Bus(record.get("capacite").asInt(), record.get("matricule").asString());
-                    Station stationD = new Station(record.get("nomStationD").asString(), record.get("adresse").asString(),
-                            record.get("latitude").asFloat(), record.get("longitude").asFloat());
-                    ArrayList<Arret> arrets = new ArrayList<>();
+                    Station stationD = new Station(
+                            stationDNode.get("nomStation").asString(),
+                            stationDNode.get("adresse").asString(),
+                            stationDNode.get("latitude").asFloat(),
+                            stationDNode.get("longitude").asFloat()
+                    );
+
+                    // Fetching related stations
                     Result rst = tx.run("MATCH (station1:STATION)-[r:ARRIVEE_LIGNE]->(stationA:STATION)" +
-                            "RETURN r.ligne as ligne, stationA.nomStation AS nomStationA, stationA.adresse AS adresseA, stationA.latitude AS latitudeA, stationA.longitude AS longitudeA" +
-                            " ,station1.nomStation AS nomStation, station1.adresse AS adresse, station1.latitude AS latitude, station1.longitude AS longitude");
+                                    " WHERE r.ligne = $ligne " +
+                                    "RETURN station1, stationA",
+                            parameters("ligne", record.get("ligne").asString()));
+                    Station stationavA=null;
                     Station stationA=null;
-                    Station station1=null;
                     while (rst.hasNext()) {
                         Record record3 = rst.next();
-                        if(record3.get("ligne").asString().equals(record.get("ligne").asString()))
-                        {
-                            station1 = new Station(record3.get("nomStation").asString(), record3.get("adresse").asString(),
-                                    record3.get("latitude").asFloat(), record3.get("longitude").asFloat());
-                            stationA = new Station(record3.get("nomStationA").asString(), record3.get("adresseA").asString(),
-                                    record3.get("latitudeA").asFloat(), record3.get("longitudeA").asFloat());
-                        }
+                        Node station1Node = record3.get("station1").asNode();
+                        Node stationANode = record3.get("stationA").asNode();
+
+                        stationavA= new Station(
+                                station1Node.get("nomStation").asString(),
+                                station1Node.get("adresse").asString(),
+                                station1Node.get("latitude").asFloat(),
+                                station1Node.get("longitude").asFloat()
+                        );
+
+                        stationA= new Station(
+                                stationANode.get("nomStation").asString(),
+                                stationANode.get("adresse").asString(),
+                                stationANode.get("latitude").asFloat(),
+                                stationANode.get("longitude").asFloat()
+                        );
+
+                        // Process stations
                     }
+
                     rst = tx.run("MATCH(:STATION)-[r:DEPART_LIGNE{ligne:'"+record.get("ligne").asString()+"'}]->(:STATION) return r.prix as prix");
                     float prix =Float.parseFloat(rst.single().get("prix").asString());
                     Voyage voyage = new Voyage(record.get("idVoyage").asInt(), record.get("heureDepart").asString(), record.get("heureDepart").asString(),
                             prix, record.get("ligne").asString(), stationD, null, stationA, bus);
 
+                    // Fetching related stops
                     Result rst2 = tx.run("MATCH (station1:STATION)-[r:PASSAGE_LIGNE]->(station2:STATION) " +
                                     "WHERE r.ligne = $ligne " +
-                                    "RETURN station1.nomStation AS nomStation, station1.adresse AS adresse, station1.latitude AS latitude, station1.longitude AS longitude",
+                                    "RETURN station1",
                             parameters("ligne", record.get("ligne").asString()));
 
+                    ArrayList<Arret> listArrets=new ArrayList<Arret>();
                     while (rst2.hasNext()) {
                         Record record2 = rst2.next();
-                        Arret arret = new Arret("00:00", new Station(record2.get("nomStation").asString(), record2.get("adresse").asString(),
-                                record2.get("latitude").asFloat(), record2.get("longitude").asFloat()), voyage);
-                        arrets.add(arret);
+                        Node station1Node = record2.get("station1").asNode();
+
+                        Station station = new Station(
+                                station1Node.get("nomStation").asString(),
+                                station1Node.get("adresse").asString(),
+                                station1Node.get("latitude").asFloat(),
+                                station1Node.get("longitude").asFloat()
+                        );
+                        listArrets.add(new Arret("00:00",station,voyage));
                     }
 
-                    Arret arret = new Arret("00:00", station1, voyage);
-                    arrets.add(arret);
-
-                    voyage.setArrets(arrets);
-                    voyageMap.put(record.get("idVoyage").asInt(), voyage);
+                    // Fetching related reservations
+                    Result result = tx.run("MATCH (reservation:RESERVATION)-[:RESERVE {ligne: $ligne}]->(s:STATION) " +
+                                    "RETURN reservation, s",
+                            parameters("ligne", record.get("ligne").asString()));
+                    ArrayList<Reservation> reservations=new ArrayList<Reservation>();
+                    while (result.hasNext()) {
+                        Record rcrd = result.next();
+                        Node reservationNode = rcrd.get("reservation").asNode();
+                        Node stationNode = rcrd.get("s").asNode();
+                        Station stationdepart = new Station(
+                                stationNode.get("nomStation").asString(),
+                                stationNode.get("adresse").asString(),
+                                stationNode.get("latitude").asFloat(),
+                                stationNode.get("longitude").asFloat()
+                        );
+                        Reservation reservation = new Reservation(stationdepart, LocalTime.now(),voyage);
+                        reservations.add(reservation);
+                    }
+                    voyage.setArrets(listArrets);
+                    voyage.setReservations(reservations);
+                    voyageMap.put(voyage.getIdVoyage(),voyage);
                 }
+
                 tx.commit();
-                tx.close();
+                Connexion.closeSession();
+                return voyageMap;
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
-
-            return voyageMap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
+
 
     }
 }

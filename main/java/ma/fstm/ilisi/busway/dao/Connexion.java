@@ -16,7 +16,7 @@ public class Connexion {
                 Driver driver = GraphDatabase.driver(dbUri, AuthTokens.basic(dbUser, dbPassword));
                 session = driver.session(SessionConfig.builder().withDatabase("neo4j").build());
             } catch (Exception e) {
-                session = null;
+//                session = null;
                 e.printStackTrace();
             }
         }

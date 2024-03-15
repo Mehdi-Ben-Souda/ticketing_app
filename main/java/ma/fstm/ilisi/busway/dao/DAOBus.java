@@ -29,7 +29,6 @@ public class DAOBus {
                 busTreeMap.put(record.get("matricule").asString(), new Bus( record.get("capacite").asInt(),record.get("matricule").asString()));
             }
             tx.commit();
-            tx.close();
             return busTreeMap;
         }
         catch (Exception e) {

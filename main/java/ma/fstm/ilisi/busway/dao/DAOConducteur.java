@@ -12,7 +12,6 @@ public class DAOConducteur {
         try (Transaction tx = Connexion.getSession().beginTransaction()) {
             tx.run("CREATE (a:CONDUCTEUR {cin: $cin, nom: $nom, prenom: $prenom, dateNaissance: $dateNaissance}) ",parameters("cin", conducteur.getCin(), "nom", conducteur.getNom(), "prenom", conducteur.getPrenom(), "dateNaissance", conducteur.getDateNaissance().toString()));
             tx.commit();
-            tx.close();
         }
         catch (Exception e) {
             e.printStackTrace();
