@@ -1,18 +1,19 @@
 package ma.fstm.ilisi.busway.metier.service;
 
 
+import ma.fstm.ilisi.busway.dao.DAOVoyage;
 import ma.fstm.ilisi.busway.metier.bo.*;
 
 import java.util.ArrayList;
 
 public class ServiceVoyage {
 
-    public Voyage ajouterVoyage(int idVoyage,Bus bus , Station depart, ArrayList<Arret> arrets, Station arrivée, String heureDepart,
+    public Voyage ajouterVoyage(Bus bus , Station depart, ArrayList<Arret> arrets, Station arrivée, String heureDepart,
                                 String heureArrivée, float prix, String numeroLigne) throws Exception {
-        Voyage voyage = new Voyage(idVoyage,heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
-
+        Voyage voyage = new Voyage(heureDepart,heureArrivée,prix,numeroLigne,depart,arrets,arrivée,bus);
+        int id=new DAOVoyage().ajouterVoyage(voyage);
+        voyage.setIdVoyage(id);
         bus.getVoyages().add(voyage);
-        //ajouter le voyage dans la base de données
         return voyage;
     }
 
