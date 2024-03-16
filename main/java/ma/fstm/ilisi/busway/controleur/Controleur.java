@@ -4,6 +4,7 @@
  */
 package ma.fstm.ilisi.busway.controleur;
 
+import ma.fstm.ilisi.busway.dao.DAOStation;
 import ma.fstm.ilisi.busway.metier.bo.*;
 import ma.fstm.ilisi.busway.metier.bo.Catalogues.CatalogueBus;
 import ma.fstm.ilisi.busway.metier.bo.Catalogues.CatalogueConducteur;
@@ -12,6 +13,7 @@ import ma.fstm.ilisi.busway.metier.bo.Catalogues.CatalogueVoyage;
 import ma.fstm.ilisi.busway.metier.exceptions.BusDejaExiste;
 import ma.fstm.ilisi.busway.metier.exceptions.ConducteurDejaExiste;
 import ma.fstm.ilisi.busway.metier.exceptions.StationIntrouvable;
+import ma.fstm.ilisi.busway.metier.service.ServiceBus;
 import ma.fstm.ilisi.busway.metier.service.ServiceReservation;
 import ma.fstm.ilisi.busway.metier.service.ServiceVoyage;
 
@@ -82,10 +84,12 @@ public class Controleur {
             System.out.println("Les bus disponibles pour la station "+nomStationD+" sont :");
             //recuperer la stations de depart
             Station SD = catalogueStation.chercherStationByNom(nomStationD);
+            System.out.println(SD);
             //recuperer les voyages
             List<Voyage> Voyages = catalogueVoyage.voyagesByStation(SD,nligne);// Mzyana
             List<Voyage> vDisponibles = new ArrayList<Voyage>();
             for(Voyage v: Voyages){
+                System.out.println((v));
                 if(v.verifierDisponibilite(SD)){// Verifier disponibilité est a changer
                     //POV:Le bus du voyage v est disponible
                     vDisponibles.add(v);
@@ -101,7 +105,7 @@ public class Controleur {
     }
 
 
-    public void ajouterVoyage(int idVoyage,String matriculeBus, String matriculeConducteur,String heureDepart, String heureArrivee,
+    public Voyage ajouterVoyage(String matriculeBus, String matriculeConducteur,String heureDepart, String heureArrivee,
                               String nomStationDepart , String nomStationArrivee , ArrayList<Arret> Arrets, float prix, String numeroLigne)
     {
         try {
@@ -110,14 +114,17 @@ public class Controleur {
             Station stationDepart=catalogueStation.chercherStationByNom(nomStationDepart);
             Station stationArrivee=catalogueStation.chercherStationByNom(nomStationArrivee);
 
-            Voyage nvVoyage = new ServiceVoyage().ajouterVoyage(idVoyage,bus,stationDepart,Arrets,stationArrivee,heureDepart,heureArrivee,prix,numeroLigne);
+            Voyage nvVoyage = new ServiceVoyage().ajouterVoyage(bus,stationDepart,Arrets,stationArrivee,heureDepart,heureArrivee,prix,numeroLigne);
             catalogueVoyage.ajouterVoyage(nvVoyage);
+            return nvVoyage;
         }
         catch (DateTimeParseException e) {
             e.printStackTrace();
+            return null;
         }
         catch (StationIntrouvable e) {
             e.printStackTrace();
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -129,6 +136,7 @@ public class Controleur {
     {
         try {
             catalogueBus.ajouterBus(new Bus(capacite,matricule));
+            new ServiceBus().ajouterBus(matricule,capacite);
         }
         catch (BusDejaExiste e){
             e.printStackTrace();
@@ -136,9 +144,11 @@ public class Controleur {
 
     }
 
-    public void ajouterStation(String nom, String adresse)
+    public void ajouterStation(String nom, String adresse, float latitude, float longitude)
     {
-        catalogueStation.ajouterStation(new Station(nom,adresse));
+        Station station=new Station(nom,adresse,latitude,longitude);
+        catalogueStation.ajouterStation(station);
+        new DAOStation().ajouterStation(station);
     }
 
     public void ajouterConducteur(String matricule, String nom, String prenom, String cin, String dateNaissance)

@@ -18,6 +18,12 @@ public class Arret{
         this.nbDescendu = 0;
         traversed = false;
     }
+    public Arret(String heureArret,Station station) {
+        this.heureArret = LocalTime.parse(heureArret);
+        this.station = station;
+        this.nbDescendu = 0;
+        traversed = false;
+    }
 
     public void setStation(Station station) {
         this.station = station;

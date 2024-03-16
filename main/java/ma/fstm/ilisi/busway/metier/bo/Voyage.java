@@ -21,8 +21,37 @@ public class Voyage {
     private ArrayList<Arret> arrets;
     private ArrayList<Reservation> reservations;
 
+    @Override
+    public String toString() {
+        return "Voyage{" +
+                "idVoyage=" + idVoyage +
+                ", heureDepart=" + heureDepart +
+                ", heureArrivée=" + heureArrivée +
+                ", prix=" + prix +
+                ", numeroLigne='" + numeroLigne + '\'' +
+                ", statut=" + statut +
+                ", bus=" + bus +
+                ", depart=" + depart +
+                ", arrivée=" + arrivée +
+                ", arrets=" + arrets +
+                ", reservations=" + reservations +
+                '}';
+    }
+
     public Voyage(int id, String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
         this.idVoyage = id;
+        this.prix = prix;
+        this.numeroLigne = numeroLigne;
+        this.bus = bus;
+        this.depart = depart;
+        this.arrivée = arrivée;
+        this.heureDepart = LocalTime.parse(heureDepart);
+        this.heureArrivée = LocalTime.parse(heureArrivée);
+        this.reservations = new ArrayList<Reservation>();
+        this.arrets = arrets;
+        this.statut = 0;//faut commencer a -1 (hs) et ajouter methode demmarer voyage pour changer le statut en 0 ou 1
+    }
+    public Voyage(String heureDepart, String heureArrivée, float prix, String numeroLigne, Station depart, ArrayList<Arret> arrets, Station arrivée, Bus bus) throws DateTimeParseException {
         this.prix = prix;
         this.numeroLigne = numeroLigne;
         this.bus = bus;
@@ -123,18 +152,6 @@ public class Voyage {
         arrets.add(arret);
     }
 
-    @Override
-    public String toString() {
-        return "Voyage{" +
-                "idVoyage=" + idVoyage +
-                ", prix=" + prix +
-                ", numeroLigne='" + numeroLigne +
-                ", bus=" + bus +
-                ", Depart de :" + depart.getNomStation() +
-                ", Arrivee a :" + arrivée.getNomStation() +
-                '}';
-    }
-
     public boolean passeParStation(Station station) {
         // Vérifie si la station de départ correspond
         if (depart.equals(station)) {
@@ -171,13 +188,14 @@ public class Voyage {
         if (index > -1) {
             //si le bus a deja traverser cette station
             if (arrets.get(index).isTraversed()) return false;
-            for (Arret ar : arrets) {
-                if (ar.getStation().equals(stationD)) {
-                    break;
-                } else {
-                    nbPlaceDispo = nbPlaceDispo + new DAOVoyage().getDescendu_now(this);
-                }
-            }
+//            for (Arret ar : arrets) {
+//                if (ar.getStation().equals(stationD)) {
+//                    break;
+//                } else {
+//                    nbPlaceDispo = nbPlaceDispo + ar.getNbDescendu();
+//                }
+//            }
+            nbPlaceDispo+=new DAOVoyage().getDescendu_now(this);
         }
         return nbPlaceDispo > 0;
     }

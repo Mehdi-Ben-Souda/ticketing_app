@@ -44,9 +44,6 @@ public class CatalogueVoyage {
 
     public void retreiveTousLesVoyages() {
         collection=new DAOVoyage().retrieveAllVoyages();
-        collection.forEach((k,v)->{
-            v.setReservations(new DAOReservation().retreiveReservationByVoyage(v));
-        });
     }
 
 }
