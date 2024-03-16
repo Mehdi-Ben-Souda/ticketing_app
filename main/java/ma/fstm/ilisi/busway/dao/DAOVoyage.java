@@ -144,7 +144,7 @@ public class DAOVoyage {
                         );
                         listArrets.add(new Arret("00:00",station,voyage));
                     }
-
+                    listArrets.add(new Arret("00:00",stationavA,voyage));
                     // Fetching related reservations
                     Result result = tx.run("MATCH (reservation:RESERVATION)-[:RESERVE {ligne: $ligne}]->(s:STATION) " +
                                     "RETURN reservation, s",
